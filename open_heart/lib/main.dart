@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
+import 'VerificationSuccess.dart';
+import 'VerificationFailed.dart'; 
 
 
 void main() {
@@ -45,10 +47,6 @@ class SignInScreen extends StatelessWidget {
                 height: 100,
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Open Heart",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
               const SizedBox(height: 20),
               const Text(
                 "Sign In",
@@ -188,6 +186,59 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
+
+              // Verification success
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VerificationSuccessPage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "Verification? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "Success",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Verification failed
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OtpFailurePage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "Verification? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "Failed",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              
             ],
           ),
         ),

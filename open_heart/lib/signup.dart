@@ -26,12 +26,7 @@ class SignUpScreen extends StatelessWidget {
                 "Assets/logo.png",
                 height: 100,
               ),
-              const SizedBox(height: 10),
-              const Text(
-                "Open Heart",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               const Text(
                 "Sign Up",
                 style: TextStyle(
