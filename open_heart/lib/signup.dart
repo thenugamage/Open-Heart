@@ -27,13 +27,10 @@ class SignUpScreen extends StatelessWidget {
                 height: 100,
               ),
               const SizedBox(height: 10),
-              // Text(
-              //   "Open Heart",
-              //   style: GoogleFonts.pacifico(
-              //     fontSize: 20,
-              //     color: Colors.black,
-              //   ),
-              // ),
+              const Text(
+                "Open Heart",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 20),
               const Text(
                 "Sign Up",
