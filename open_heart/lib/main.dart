@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'VerificationSuccess.dart';
 import 'VerificationFailed.dart'; 
+import 'IntroPage.dart'; 
+import 'home.dart';
 
 
 void main() {
@@ -237,7 +239,56 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
               ),
+                            // INTRO PAGE
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => IntroPage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "Intro Page? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "Intro",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+// home PAGE
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "Home Page? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "Home",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
+              
               
             ],
           ),
