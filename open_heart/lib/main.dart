@@ -4,6 +4,7 @@ import 'VerificationSuccess.dart';
 import 'VerificationFailed.dart'; 
 import 'IntroPage.dart'; 
 import 'home.dart';
+import 'aboutUs.dart';
 
 
 void main() {
@@ -288,6 +289,32 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
 
+// home PAGE
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FeaturedInitiativesPage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "about us? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "about us",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              
               
               
             ],
