@@ -36,7 +36,7 @@ class SignInScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Color(0xFF6AB1D7)],
+            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
           ),
         ),
         child: Padding(
@@ -56,7 +56,7 @@ class SignInScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Color.fromARGB(255, 8, 56, 95),
                 ),
               ),
               const SizedBox(height: 20),
@@ -92,23 +92,32 @@ class SignInScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Continue Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF003B5C),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: SizedBox(
+                    width: 250, // Set desired width
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 1, 66, 104), // Button background color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Continue",
+                          style: TextStyle(
+                            color: Colors.white, // Text color
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    "Continue",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
                 ),
-              ),
+
               const SizedBox(height: 20),
 
               const Text(
@@ -176,12 +185,12 @@ class SignInScreen extends StatelessWidget {
                 child: const Text.rich(
                   TextSpan(
                     text: "New User? ",
-                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    style: TextStyle(color: Color.fromARGB(255, 19, 90, 149), fontSize: 14),
                     children: [
                       TextSpan(
                         text: "Create Account",
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

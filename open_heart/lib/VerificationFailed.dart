@@ -11,7 +11,7 @@ class OtpFailurePage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Colors.blue.shade300],
+            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
           ),
         ),
         child: Column(

@@ -8,11 +8,11 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: _buildBottomNavigationBar(),
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Colors.blue.shade300],
+            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
           ),
         ),
         child: SingleChildScrollView(
@@ -20,17 +20,13 @@ class HomePage extends StatelessWidget {
             children: [
               const SizedBox(height: 50),
 
-              // Top Menu & Search Icons
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.menu, size: 30, color: Colors.black),
-                    Icon(Icons.search, size: 30, color: Colors.black),
-                  ],
-                ),
-              ),
+              // **Top Menu & Search Icons**
+              _buildTopBar(),
+
+              const SizedBox(height: 20),
+
+              // **Leaderboard**
+              _buildLeaderboard(),
 
               const SizedBox(height: 20),
 
@@ -60,6 +56,62 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // **Top Bar (Menu & Search)**
+  Widget _buildTopBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(Icons.menu, size: 30, color: Colors.black),
+          Icon(Icons.search, size: 30, color: Colors.black),
+        ],
+      ),
+    );
+  }
+
+  // **Leaderboard**
+  Widget _buildLeaderboard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _leaderboardProfile("Jackson", "2000", "Assets/user1.png"),
+                _leaderboardProfile("Eiden", "2430", "Assets/user2.png", true),
+                _leaderboardProfile("Emma Aria", "1674", "Assets/user3.png"),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _leaderboardProfile(String name, String score, String imgPath, [bool isTop = false]) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: isTop ? 30 : 25,
+          backgroundImage: AssetImage(imgPath),
+        ),
+        Text(name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        Text(score, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+        if (isTop)
+          Icon(Icons.star, color: Colors.yellow, size: 20),
+      ],
+    );
+  }
+
   // **Banner Section**
   Widget _buildBanner() {
     return Padding(
@@ -70,7 +122,7 @@ class HomePage extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Image.asset(
-              'Assets/homeimg1.png', // Replace with your actual banner image
+              'Assets/homeimg1.png',
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
@@ -83,13 +135,6 @@ class HomePage extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(1, 1),
-                        blurRadius: 2,
-                        color: Colors.black,
-                      ),
-                    ],
                   ),
                 ),
                 const Text(
@@ -184,7 +229,7 @@ class HomePage extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Image.asset(
-              'Assets/homeimg2.png', // Background image for search section
+              'Assets/homeimg2.png',
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
@@ -227,7 +272,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Filter Buttons (Category & Location)**
+  // **Filter Buttons**
   Widget _filterButton(IconData icon, String text) {
     return SizedBox(
       width: 180,
@@ -239,10 +284,7 @@ class HomePage extends StatelessWidget {
         ),
         onPressed: () {},
         icon: Icon(icon, color: Colors.white, size: 16),
-        label: Text(
-          text,
-          style: const TextStyle(fontSize: 14, color: Colors.white),
-        ),
+        label: Text(text, style: const TextStyle(fontSize: 14, color: Colors.white)),
       ),
     );
   }

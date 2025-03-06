@@ -13,7 +13,7 @@ class SignUpScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Color(0xFF6AB1D7)],
+            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
           ),
         ),
         child: Padding(
