@@ -5,6 +5,7 @@ import 'VerificationFailed.dart';
 import 'IntroPage.dart'; 
 import 'home.dart';
 import 'aboutUs.dart';
+import 'verfication.dart';
 
 
 void main() {
@@ -198,6 +199,32 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Verification success
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OTPVerificationPage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "Verification? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "verfication",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
 
 
               // Verification success

@@ -3,6 +3,8 @@ import 'main.dart';
 
 
 class FeaturedInitiativesPage extends StatefulWidget {
+  const FeaturedInitiativesPage({super.key});
+
   @override
   _FeaturedInitiativesPageState createState() =>
       _FeaturedInitiativesPageState();

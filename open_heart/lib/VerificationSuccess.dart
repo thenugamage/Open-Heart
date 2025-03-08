@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'main.dart'; 
 
 class VerificationSuccessPage extends StatelessWidget {
+  const VerificationSuccessPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

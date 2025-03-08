@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'main.dart'; 
 
 class OtpFailurePage extends StatelessWidget {
+  const OtpFailurePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
