@@ -28,7 +28,6 @@ class SignUpScreen extends StatelessWidget {
                 opacity: 0.9,
                 child: Image.asset(
                   'Assets/backgroundimg.png',
-                  
                 ),
               ),
             ),

@@ -201,20 +201,14 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
 
-<<<<<<< HEAD
-              // Verification success
-=======
+
         // Verification success
->>>>>>> Thenuri
+
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-<<<<<<< HEAD
-                    MaterialPageRoute(builder: (context) => OTPVerificationPage ()),
-=======
                     MaterialPageRoute(builder: (context) => VerificationPage ()),
->>>>>>> Thenuri
                   );
                 },
                 child: const Text.rich(
@@ -223,15 +217,9 @@ class SignInScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.black54, fontSize: 14),
                     children: [
                       TextSpan(
-<<<<<<< HEAD
-                        text: "verfication",
-                        style: TextStyle(
-                          color: Colors.blue,
-=======
                         text: "Success",
                         style: TextStyle(
                           color: Color.fromARGB(255, 0, 93, 169),
->>>>>>> Thenuri
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -239,12 +227,6 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-<<<<<<< HEAD
-
-=======
->>>>>>> Thenuri
-
               // Verification success
               GestureDetector(
                 onTap: () {
