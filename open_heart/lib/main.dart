@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
+import 'verfication.dart';
 import 'VerificationSuccess.dart';
 import 'VerificationFailed.dart'; 
 import 'IntroPage.dart'; 
@@ -40,26 +41,26 @@ class SignInScreen extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo
               Image.asset(
                 "Assets/logo.png",
-                height: 100,
+                height: 105,
               ),
               const SizedBox(height: 10),
               const SizedBox(height: 20),
               const Text(
                 "Sign In",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 8, 56, 95),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               
               // Email Field
               TextField(
@@ -69,7 +70,7 @@ class SignInScreen extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -84,7 +85,7 @@ class SignInScreen extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -101,7 +102,7 @@ class SignInScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 1, 66, 104), // Button background color
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 15),
                       ),
@@ -122,20 +123,20 @@ class SignInScreen extends StatelessWidget {
 
               const Text(
                 "or continue with",
-                style: TextStyle(fontSize: 14, color: Colors.black54),
+                style: TextStyle(fontSize: 14, color: Colors.black),
               ),
               const SizedBox(height: 10),
 
               // Apple Sign In Button
               SizedBox(
-                width: double.infinity,
+                width: 250,
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                       side: const BorderSide(color: Colors.black),
                     ),
                   ),
@@ -150,14 +151,14 @@ class SignInScreen extends StatelessWidget {
 
               // Google Sign In Button
               SizedBox(
-                width: double.infinity,
+                width: 250,
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                       side: const BorderSide(color: Colors.black),
                     ),
                   ),
@@ -191,6 +192,31 @@ class SignInScreen extends StatelessWidget {
                         text: "Create Account",
                         style: TextStyle(
                           color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+        // Verification success
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VerificationPage ()),
+                  );
+                },
+                child: const Text.rich(
+                  TextSpan(
+                    text: "Verification? ",
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "Success",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 93, 169),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
