@@ -1,88 +1,35 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; 
+import 'home.dart';
 
-class VerificationSuccessPage extends StatelessWidget {
-  const VerificationSuccessPage({super.key});
+class VerificationSuccess extends StatelessWidget {
+  const VerificationSuccess({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
-          ),
-        ),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo
-            Image.asset(
-              'Assets/logo.png', 
-              height: 100,
+            Image.asset("Assets/success.png", height: 100),
+            const SizedBox(height: 20),
+            const Text(
+              "Verification Successful!",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-
-            SizedBox(height: 40),
-
-            // "Completed" Badge
-            Image.asset(
-              'Assets/Completed_Icon.png',
-              height: 150,
-            ),
-
-            SizedBox(height: 30),
-
-            // "You are Verified" Text
-            Text(
-              "You are Verified",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF013F68),
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               ),
-            ),
-
-            SizedBox(height: 20),
-
-            // Description Text
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Text(
-                "Congratulations to you. You are now Verified! Kindly proceed to log in",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-
-            SizedBox(height: 40),
-
-            // Continue Button
-            SizedBox(
-              width: 200,
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade900,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(color: Colors.white),
-                  ),
-                ),
-                onPressed: () {
-                  // Navigate to Login Page
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-                child: Text(
-                  "Continue",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
+              child: const Text("Continue", style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
