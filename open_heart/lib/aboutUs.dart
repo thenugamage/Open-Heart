@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
+
 
 class FeaturedInitiativesPage extends StatefulWidget {
   const FeaturedInitiativesPage({super.key});
