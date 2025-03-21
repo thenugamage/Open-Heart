@@ -1,4 +1,5 @@
-//Created by  Thenuri
+// Created by Thenuri
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -38,8 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -140,7 +140,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
               // OR Text
               const Text("or continue with"),
-
               const SizedBox(height: 10),
 
               // Google Sign-In Button
@@ -161,7 +160,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               // Create Account Link

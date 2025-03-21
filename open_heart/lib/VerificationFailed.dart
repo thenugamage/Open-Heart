@@ -1,7 +1,7 @@
-//Created by  Thenuri
+// Created by Thenuri
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class VerificationFailedScreen extends StatelessWidget {
   @override
@@ -29,25 +29,19 @@ class VerificationFailedScreen extends StatelessWidget {
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               // **Logo**
               Image.asset(
                 'Assets/logo.png',
                 height: 80,
               ),
-
               const SizedBox(height: 30),
-
               // **Failed Icon**
               Image.asset(
                 'Assets/sad-face.png',
                 height: 120,
               ),
-
               const SizedBox(height: 20),
-
               // **Login Failed Text**
               Text(
                 "Login Failed",
@@ -57,18 +51,14 @@ class VerificationFailedScreen extends StatelessWidget {
                   color: Colors.black87,
                 ),
               ),
-
               const SizedBox(height: 10),
-
               // **Failure Message**
               Text(
                 "Sorry, this OTP is incorrect",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
               ),
-
               const SizedBox(height: 40),
-
               // **Resend OTP Button**
               SizedBox(
                 width: double.infinity,
