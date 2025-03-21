@@ -1,218 +1,146 @@
+// //Created by  Thenuri
 import 'package:flutter/material.dart';
-import 'VerificationSuccess.dart';
-import 'VerificationFailed.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pinput/pinput.dart';
 
-class VerificationScreen extends StatefulWidget {
-  final String email;
-  final String correctOtp;
-
-  const VerificationScreen({super.key, required this.email, required this.correctOtp});
-
-  @override
-  _VerificationScreenState createState() => _VerificationScreenState();
-}
-
-class _VerificationScreenState extends State<VerificationScreen> {
-  final List<TextEditingController> _otpControllers = List.generate(
-    4,
-    (index) => TextEditingController(),
-  );
-  final List<FocusNode> _focusNodes = List.generate(
-    4,
-    (index) => FocusNode(),
-  );
-
-  @override
-  void dispose() {
-    for (var controller in _otpControllers) {
-      controller.dispose();
-    }
-    for (var node in _focusNodes) {
-      node.dispose();
-    }
-    super.dispose();
-  }
-
-  void _verifyOtp() async {
-    // Combine all digits
-    String enteredOtp = _otpControllers.map((controller) => controller.text).join();
-    
-    if (enteredOtp.length != 4) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter all 4 digits')),
-      );
-      return;
-    }
-
-    if (enteredOtp == widget.correctOtp) {
-      // OTP is correct
-      try {
-        // Mark the user's email as verified in Firebase
-        User? user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          await user.reload();
-        }
-        
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const VerificationSuccess()),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
-      }
-    } else {
-      // OTP is incorrect
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const VerificationFailed()),
-      );
-    }
-  }
-
-
-
+class OTPVerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       body: Container(
         width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Color(0xFF117DB7)],
+            colors: [Color(0xFFE3F2FD), Color(0xFF64B5F6)],
           ),
 
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("Assets/logo.png", height: 105),
-              const SizedBox(height: 20),
-              const Text(
-                "Verify Email",
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF08385F),
+              // **Back Button**
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                  onPressed: () => Navigator.pop(context),
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              // **Logo**
+              Image.asset(
+                'assets/open_heart_logo.png',
+                height: 80,
+              ),
+
+              const SizedBox(height: 10),
+
+              // **Title**
               Text(
-                "We have sent a 4-digit code to",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF08385F),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                widget.email,
-                style: TextStyle(
-                  fontSize: 16,
+                "Open Heart",
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF08385F),
+                  color: Colors.black,
                 ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // **Verification Heading**
+              Text(
+                "Verification",
+                style: GoogleFonts.poppins(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // **Verification Message**
+              Text(
+                "‘We’ve sent a 4-digit verification code to your email. Please enter the OTP code below to continue.’",
                 textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
               ),
-              const SizedBox(height: 40),
-              
-              // OTP Input Fields
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(
-                  4,
-                  (index) => SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: TextField(
-                      controller: _otpControllers[index],
-                      focusNode: _focusNodes[index],
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      decoration: InputDecoration(
-                        counterText: "",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      style: const TextStyle(fontSize: 24),
-                      onChanged: (value) {
-                        // Auto focus to next field
-                        if (value.isNotEmpty && index < 3) {
-                          _focusNodes[index + 1].requestFocus();
-                        }
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 40),
-              
-              // Continue Button
-              SizedBox(
-                width: 250,
-                child: ElevatedButton(
-                  onPressed: _verifyOtp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF013F68),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                  ),
-                  child: const Text(
-                    "Verify",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-              ),
-              
+
               const SizedBox(height: 20),
-              
-              // Resend OTP Link
-              GestureDetector(
-                onTap: () async {
-                  try {
-                    // Re-send the OTP
-                    User? user = FirebaseAuth.instance.currentUser;
-                    if (user != null) {
-                      await user.sendEmailVerification();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('OTP resent successfully')),
-                      );
-                    }
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error: ${e.toString()}')),
-                    );
-                  }
+
+              // **OTP Input Field**
+              Pinput(
+                length: 4,
+                keyboardType: TextInputType.number,
+                defaultPinTheme: PinTheme(
+                  width: 60,
+                  height: 60,
+                  textStyle: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // **Continue Button**
+              _buildButton("Continue", onPressed: () {
+                // Handle OTP verification
+              }),
+
+              const SizedBox(height: 10),
+
+              // **Resend Button**
+              TextButton(
+                onPressed: () {
+                  // Handle OTP resend
                 },
-                child: const Text(
-                  "Didn't receive the code? Resend",
-                  style: TextStyle(
-                    color: Color(0xFF08385F),
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Text(
+                  "Resend",
+                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.blueAccent),
                 ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // **Terms & Policy Notice**
+              Text(
+                "By clicking the Continue button, you agree to the terms of service and privacy policy.",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(fontSize: 12, color: Colors.black54),
               ),
             ],
           ),
-          ),
+        ),
+      ),
+    );
+  }
+
+  // **Reusable Continue Button**
+  Widget _buildButton(String text, {required VoidCallback onPressed}) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF064B6D),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
+        ),
       ),
     );
   }
 }
-

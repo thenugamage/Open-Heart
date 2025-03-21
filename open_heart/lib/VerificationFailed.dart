@@ -1,112 +1,89 @@
+//Created by  Thenuri
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'verfication.dart';
-import 'dart:math';
-
-class VerificationFailed extends StatelessWidget {
-  const VerificationFailed({super.key});
-
-  // Generate a random 4-digit OTP
-  String _generateOTP() {
-    Random random = Random();
-    int otp = random.nextInt(9000) + 1000; // Generates a number between 1000 and 9999
-    return otp.toString();
-  }
-
-  Future<void> _resendVerificationEmail(BuildContext context) async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        // Generate new OTP
-        String newOtp = _generateOTP();
-        
-        // In a real app, this would send the OTP via email
-        // For this example, we'll just navigate to the verification screen with the new OTP
-        
-        // Show loading indicator
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sending new verification code...')),
-        );
-        
-        // Simulate network delay
-        await Future.delayed(const Duration(seconds: 1));
-        
-        // Navigate to verification screen with new OTP
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => VerificationScreen(
-              email: user.email ?? '',
-              correctOtp: newOtp,
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No user found. Please sign up again.')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to resend verification: ${e.toString()}')),
-      );
-    }
-  }
+import 'package:google_fonts/google_fonts.dart';
 
 
+class VerificationFailedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Color(0xFF117DB7)],
+            colors: [Color(0xFFE3F2FD), Color(0xFF64B5F6)],
           ),
         ),
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("Assets/failed.png", height: 100),
+              // **Back Button**
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+
               const SizedBox(height: 20),
-              const Text(
-                "Verification Failed!",
-                style: TextStyle(
-                  fontSize: 24, 
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF08385F),
-                ),
+
+              // **Logo**
+              Image.asset(
+                'Assets/logo.png',
+                height: 80,
               ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                child: Text(
-                  "The verification code you entered is incorrect. Please try again.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF08385F),
-                  ),
-                ),
-              ),
+
               const SizedBox(height: 30),
+
+              // **Failed Icon**
+              Image.asset(
+                'Assets/sad-face.png',
+                height: 120,
+              ),
+
+              const SizedBox(height: 20),
+
+              // **Login Failed Text**
+              Text(
+                "Login Failed",
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // **Failure Message**
+              Text(
+                "Sorry, this OTP is incorrect",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
+              ),
+
+              const SizedBox(height: 40),
+
+              // **Resend OTP Button**
               SizedBox(
-                width: 250,
-                child: ElevatedButton(
-                  onPressed: () => _resendVerificationEmail(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF013F68),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                width: double.infinity,
+                height: 50,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xFF064B6D), width: 2),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: const Text(
-                    "Resend Code",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  onPressed: () {
+                    // Resend OTP logic
+                  },
+                  child: Text(
+                    "Resend OTP",
+                    style: GoogleFonts.poppins(fontSize: 16, color: Color(0xFF064B6D)),
                   ),
                 ),
               ),
