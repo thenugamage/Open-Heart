@@ -1,25 +1,56 @@
 // Created by Thenuri
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'verfication.dart';
 
 class VerificationFailedScreen extends StatelessWidget {
+  final String verificationId;
+  const VerificationFailedScreen({super.key, required this.verificationId});
+
+  void resendOTP(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: "+1234567890", // Replace with actual phone number
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Verification Failed: ${e.message}')),
+          );
+        },
+        codeSent: (String verId, int? resendToken) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => OTPVerificationScreen(verificationId: verId)),
+          );
+        },
+        codeAutoRetrievalTimeout: (String verId) {},
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFE3F2FD), Color(0xFF64B5F6)],
+            colors: [Colors.white, Color(0xFF117DB7)],
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // **Back Button**
               Align(
@@ -31,52 +62,54 @@ class VerificationFailedScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // **Logo**
-              Image.asset(
-                'Assets/logo.png',
-                height: 80,
-              ),
-              const SizedBox(height: 30),
-              // **Failed Icon**
-              Image.asset(
-                'Assets/sad-face.png',
-                height: 120,
-              ),
+              Image.asset("Assets/logo.png", height: 104),
+              const SizedBox(height: 50),
+              Image.asset("Assets/sad-face.png", height: 132), // Added sad-face image
               const SizedBox(height: 20),
-              // **Login Failed Text**
-              Text(
-                "Login Failed",
-                style: GoogleFonts.poppins(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+              const Text(
+          "Verification Failed",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
               ),
-              const SizedBox(height: 10),
-              // **Failure Message**
-              Text(
-                "Sorry, this OTP is incorrect",
+                const SizedBox(height: 30),
+                const Text(
+                "Sorry, We couldn't verify your phone number. Please try again.",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
-              ),
-              const SizedBox(height: 40),
-              // **Resend OTP Button**
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xFF064B6D), width: 2),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+                ),
+                const SizedBox(height: 40),
+                SizedBox(
+                width: 250,
+                child: ElevatedButton(
                   onPressed: () {
-                    // Resend OTP logic
+                  Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                  builder: (context) => OTPVerificationScreen(verificationId: verificationId),
+                  ),
+                  );
                   },
-                  child: Text(
-                    "Resend OTP",
-                    style: GoogleFonts.poppins(fontSize: 16, color: Color(0xFF064B6D)),
+                  style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF013F68),
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: const BorderSide(color: Colors.white, width: 2),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  child: const Text(
+                  "Resend OTP",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
-              ),
+                ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
