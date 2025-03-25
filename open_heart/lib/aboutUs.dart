@@ -1,7 +1,11 @@
+// created by Thenuri
+
 import 'package:flutter/material.dart';
 
 
 class FeaturedInitiativesPage extends StatefulWidget {
+  const FeaturedInitiativesPage({super.key});
+
   @override
   _FeaturedInitiativesPageState createState() =>
       _FeaturedInitiativesPageState();

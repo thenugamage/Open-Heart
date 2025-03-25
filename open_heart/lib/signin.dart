@@ -1,4 +1,4 @@
-//Created by  Thenuri
+// Created by Thenuri
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,18 +13,14 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _signIn() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+      // Sign in with phone number and password (custom backend needed)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Phone authentication requires a backend to verify passwords.')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -87,11 +83,11 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 40),
 
-              // Email Field
+              // Phone Number Field
               TextField(
-                controller: _emailController,
+                controller: _phoneController,
                 decoration: InputDecoration(
-                  hintText: "Your Email",
+                  hintText: "Phone Number",
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
@@ -131,7 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
                   child: const Text(
-                    "Continue",
+                    "Sign up",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
@@ -140,7 +136,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
               // OR Text
               const Text("or continue with"),
-
               const SizedBox(height: 10),
 
               // Google Sign-In Button
@@ -161,7 +156,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               // Create Account Link

@@ -1,88 +1,73 @@
-//Created by  Thenuri
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'home.dart';
 
 class VerificationSuccessScreen extends StatelessWidget {
+  const VerificationSuccessScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFE3F2FD), Color(0xFF64B5F6)],
+            colors: [Colors.white, Color(0xFF117DB7)],
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // **Back Button**
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-
+              Image.asset("Assets/logo.png", height: 105),
               const SizedBox(height: 20),
-
-              // **Logo**
-              Image.asset(
-                'Assets/logo.png',
-                height: 80,
-              ),
-
-              const SizedBox(height: 20),
-
-              // **Success Badge**
-              Image.asset(
-                'Assets/Completed_Icon.png', 
-                height: 120,
-              ),
-
-              const SizedBox(height: 20),
-
-              // **Verification Title**
-              Text(
-                "You are Verified",
-                style: GoogleFonts.poppins(
-                  fontSize: 22,
+              const Text(
+                "Verification Success",
+                style: TextStyle(
+                  fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Color(0xFF08385F),
                 ),
               ),
-
-              const SizedBox(height: 10),
-
-              // **Success Message**
-              Text(
-                "Congratulations to you. You are now Verified! Kindly proceed to log in",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
-              ),
-
               const SizedBox(height: 30),
-
-              // **Continue Button**
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF064B6D),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: const Text(
+                  "Your account has been successfully verified!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF08385F),
                   ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
                   onPressed: () {
-                    // Navigate to Login Page
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
                   },
-                  child: Text(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF013F68),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  child: const Text(
                     "Continue",
-                    style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),

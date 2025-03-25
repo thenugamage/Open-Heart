@@ -1,7 +1,10 @@
+//created by thenuri
 import 'package:flutter/material.dart';
 import 'signin.dart';
 
 class IntroPage extends StatelessWidget {
+  const IntroPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
