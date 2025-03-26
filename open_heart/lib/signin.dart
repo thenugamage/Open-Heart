@@ -66,12 +66,12 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset("Assets/logo.png", height: 105),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               const Text(
                 "Sign In",
                 style: TextStyle(
@@ -119,33 +119,40 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: ElevatedButton(
                   onPressed: _signIn,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF013F68),
+                    backgroundColor: const Color.fromARGB(255, 8, 85, 124),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
                   child: const Text(
-                    "Sign up",
+                    "Sign In",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
 
               // OR Text
-              const Text("or continue with"),
-              const SizedBox(height: 10),
+                const Text(
+                "or continue with",
+                style: TextStyle(
+                  color: Color(0xFF08385F),
+                  fontSize: 16,
+                ),
+                ),
+                const SizedBox(height: 40),
 
-              // Google Sign-In Button
+              // Google Sign-In Buttona
               SizedBox(
                 width: 250,
+                height: 50,
                 child: ElevatedButton.icon(
                   onPressed: _signInWithGoogle,
                   icon: Image.asset("Assets/google.png", height: 24),
                   label: const Text(
                     "Sign In with Google",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Color.fromARGB(255, 103, 143, 209), fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -155,7 +162,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
 
               // Create Account Link
               GestureDetector(
