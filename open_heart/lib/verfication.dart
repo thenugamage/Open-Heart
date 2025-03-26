@@ -1,7 +1,9 @@
+// created by Thenuri
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'VerificationSuccess.dart';
 import 'VerificationFailed.dart';
+import 'package:pinput/pinput.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
   final String verificationId;
@@ -58,68 +60,54 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               Image.asset("Assets/logo.png", height: 105),
               const SizedBox(height: 20),
               const Text(
-                "Verification",
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF08385F),
-                ),
+              "Verification",
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF08385F),
+              ),
               ),
               const SizedBox(height: 20),
               const Text(
-                "Enter the OTP sent to your phone",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+              "We’ve sent a 6-digit verification code to your email. Please enter the OTP code below to be continue.",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
               ),
               const SizedBox(height: 40),
-              TextField(
+              Pinput(
                 controller: otpController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: "Enter OTP",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
+                length: 6,
+                defaultPinTheme: PinTheme(
+                  width: 50,
+                  height: 70,
+                  textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               SizedBox(
-                width: 250,
-                child: ElevatedButton(
-                  onPressed: verifyOTP,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF013F68),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                  ),
-                  child: const Text(
-                    "Verify OTP",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
+              width: 250,
+              child: ElevatedButton(
+                onPressed: verifyOTP,
+                style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF013F68),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                ),
                 child: const Text(
-                  "Back",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                  ),
+                "Verify OTP",
+                style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
-            ],
+              ),
+            ], 
           ),
         ),
       ),

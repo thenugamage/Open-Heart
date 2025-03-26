@@ -1,3 +1,4 @@
+// created by Thenuri
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'verfication.dart';
@@ -152,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 child: const Text.rich(
                   TextSpan(
-                    text: "Have an Account?? ",
+                    text: "Have an Account? ",
                     style: TextStyle(color: Color(0xFF135A95), fontSize: 14),
                     children: [
                       TextSpan(
