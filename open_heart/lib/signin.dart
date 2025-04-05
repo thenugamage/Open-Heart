@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'signup.dart';
 import 'home.dart';
 
@@ -9,50 +10,161 @@ class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController _phoneController = TextEditingController();
+ final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String? _errorMessage;
 
-  Future<void> _signIn() async {
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  // Email sign in method
+  Future<void> _signInWithEmailAndPassword() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
     try {
-      // Sign in with phone number and password (custom backend needed)
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      
+      // Authentication successful, navigate to home screen
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = _getMessageFromErrorCode(e.code);
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Phone authentication requires a backend to verify passwords.')),
+        SnackBar(
+          content: Text(_errorMessage ?? "An error occurred during sign in"),
+          backgroundColor: Colors.red,
+        ),
       );
     } catch (e) {
+      setState(() {
+        _errorMessage = "An error occurred. Please try again later.";
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+        SnackBar(
+          content: Text(_errorMessage!),
+          backgroundColor: Colors.red,
+        ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
+  // Google sign in method
   Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return;
+      // Initialize Google Sign In
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
+      if (googleUser == null) {
+        // User canceled the sign-in process
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      // Obtain the auth details from the Google user
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
+
+      // Create a new credential
+      final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
+      // Sign in with the credential
       await FirebaseAuth.instance.signInWithCredential(credential);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+
+      // Authentication successful, navigate to verification screen
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = _getMessageFromErrorCode(e.code);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_errorMessage ?? "An error occurred during Google sign in"),
+          backgroundColor: Colors.red,
+        ),
       );
     } catch (e) {
+      setState(() {
+        _errorMessage = "An error occurred. Please try again later.";
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google Sign-In Failed')),
+        SnackBar(
+          content: Text(_errorMessage!),
+          backgroundColor: Colors.red,
+        ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
-  @override
+  // Convert Firebase error codes to user-friendly messages
+  String _getMessageFromErrorCode(String errorCode) {
+    switch (errorCode) {
+      case "invalid-email":
+        return "Your email address is invalid.";
+      case "user-disabled":
+        return "This user has been disabled.";
+      case "user-not-found":
+        return "No user found with this email.";
+      case "wrong-password":
+        return "Wrong password provided.";
+      case "too-many-requests":
+        return "Too many attempts. Please try again later.";
+      case "operation-not-allowed":
+        return "Operation not allowed. Please contact support.";
+      case "network-request-failed":
+        return "Network error. Please check your connection.";
+      default:
+        return "An error occurred. Please try again.";
+    }
+  }
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -66,7 +178,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -81,43 +193,62 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-
-              // Phone Number Field
-              TextField(
-                controller: _phoneController,
-                decoration: InputDecoration(
-                  hintText: "Phone Number",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
+                  /// Email & Password Fields
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "Your Email",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "Password",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 15),
 
-              // Password Field
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+                  // Error message display
+                  if (_errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, left: 30, right: 30),
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(color: Colors.red, fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                  const SizedBox(height: 20),
 
               // Continue Button
               SizedBox(
                 width: 250,
                 child: ElevatedButton(
-                  onPressed: _signIn,
+                  onPressed: _signInWithEmailAndPassword,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 8, 85, 124),
                     shape: RoundedRectangleBorder(
@@ -192,3 +323,4 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
+
