@@ -9,8 +9,8 @@ void main() {
 class LogoutPage extends StatelessWidget {
   const LogoutPage({super.key});
 
+  // Show the confirmation dialog with the "Yes" red button
   void _showLogoutDialog(BuildContext context) {
-    // Show the confirmation dialog with red 'Yes' button
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -29,7 +29,7 @@ class LogoutPage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
-                _logout(context); // Proceed to logout
+                _logout(context); // Proceed to log out
               },
               child: const Text(
                 "Yes",
@@ -42,17 +42,16 @@ class LogoutPage extends StatelessWidget {
     );
   }
 
+  // Simulate logout logic and navigate back to the SignIn page
   void _logout(BuildContext context) {
-    // Simulate logout logic (for now, just show a confirmation message)
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("You have been logged out."),
-        backgroundColor: Colors.green,
-      ),
-    );
+    // You can clear any session or authentication data here
 
-    // Navigate back to the previous page (or to a login page)
-    Navigator.pop(context);
+    // Navigate back to the SignIn page
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SignInPage()), // Redirect to Sign-In Page
+    );
   }
 
   @override
@@ -70,7 +69,7 @@ class LogoutPage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
+              // Header row
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -128,10 +127,8 @@ class LogoutPage extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed:
-                      () => _showLogoutDialog(
-                        context,
-                      ), // Show confirmation dialog
+                  onPressed: () =>
+                      _showLogoutDialog(context), // Show confirmation dialog
                   child: const Text(
                     "Log Out",
                     style: TextStyle(fontSize: 16, color: Colors.white),
@@ -141,6 +138,23 @@ class LogoutPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// Mock SignIn Page (you can replace this with your actual sign-in page)
+class SignInPage extends StatelessWidget {
+  const SignInPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign In'),
+      ),
+      body: const Center(
+        child: Text('Please sign in again.'),
       ),
     );
   }

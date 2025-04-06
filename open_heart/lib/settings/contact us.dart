@@ -57,23 +57,18 @@ class ContactUsPage extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                // Logo box
+                // Logo from Assets
                 Center(
                   child: Container(
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.black,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "LOGO",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    child: Image.asset(
+                      'Assets/logo.png', // Ensure this is the correct path to your image
+                      fit:
+                          BoxFit.cover, // Ensure the image covers the container
                     ),
                   ),
                 ),
@@ -136,14 +131,14 @@ class ContactUsPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    // Stacked images
+                    // Stacked images in a row
                     Column(
                       children: [
-                        _contactImageBox('assets/img1.jpg'),
+                        _contactImageBox('Assets/child_contactus.PNG'),
                         const SizedBox(height: 8),
-                        _contactImageBox('assets/img2.jpg'),
+                        _contactImageBox('Assets/child_contactus1.PNG'),
                         const SizedBox(height: 8),
-                        _contactImageBox('assets/img3.jpg'),
+                        _contactImageBox('Assets/child_contactus2.PNG'),
                       ],
                     ),
                   ],
@@ -168,7 +163,7 @@ class ContactUsPage extends StatelessWidget {
     );
   }
 
-  // Reusable stacked image box
+  // Reusable stacked image box with slight margin
   static Widget _contactImageBox(String path) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
