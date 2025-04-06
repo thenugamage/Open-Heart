@@ -4,6 +4,7 @@ import 'notification.dart'; // Import the NotificationPage
 import 'profile.dart'; // Import the ProfilePage
 import 'data server.dart'; // Import the DataServerPage
 import 'free up space.dart'; // Import the FreeUpSpacePage
+import 'terms and policies.dart'; // Import the TermsAndPolicyPage
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SettingsPage()));
@@ -100,14 +101,13 @@ class SettingsPage extends StatelessWidget {
                       buildTile(
                           Icons.subscriptions, "My Subscription", context),
                       buildTile(Icons.help_outline, "Help & Support", context),
-                      buildTile(
-                          Icons.description, "Terms and Policies", context),
+                      buildTile(Icons.description, "Terms and Policies",
+                          context), // Links to TermsAndPolicyPage
 
                       buildSectionTitle("Cache & Cellular"),
-                      buildTile(Icons.cleaning_services, "Free up space",
-                          context), // Links to FreeUpSpacePage
-                      buildTile(Icons.data_saver_on, "Data Saver",
-                          context), // Links to DataServerPage
+                      buildTile(
+                          Icons.cleaning_services, "Free up space", context),
+                      buildTile(Icons.data_saver_on, "Data Saver", context),
 
                       buildSectionTitle("Actions"),
                       buildTile(Icons.bug_report, "Report a problem", context),
@@ -162,16 +162,19 @@ class SettingsPage extends StatelessWidget {
           } else if (label == "Free up space") {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const FreeUpSpacePage()), // Navigate to FreeUpSpacePage
+              MaterialPageRoute(builder: (context) => const FreeUpSpacePage()),
             );
           } else if (label == "Data Saver") {
             Navigator.push(
               context,
+              MaterialPageRoute(builder: (context) => const DataSaverPage()),
+            );
+          } else if (label == "Terms and Policies") {
+            Navigator.push(
+              context,
               MaterialPageRoute(
                   builder: (context) =>
-                      const DataSaverPage()), // Navigate to DataServerPage
+                      const TermsAndPolicyPage()), // Navigate to TermsAndPolicyPage
             );
           }
         },
