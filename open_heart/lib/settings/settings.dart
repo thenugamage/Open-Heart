@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'security.dart';
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SettingsPage()));
@@ -72,24 +73,28 @@ class SettingsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       buildSectionTitle("Account"),
-                      buildTile(Icons.edit, "Edit profile"),
-                      buildTile(Icons.lock, "Security"),
-                      buildTile(Icons.notifications, "Notifications"),
-                      buildTile(Icons.privacy_tip, "Privacy"),
+                      buildTile(Icons.edit, "Edit profile", context),
+                      buildTile(Icons.lock, "Security",
+                          context), // Security tile now navigates
+                      buildTile(Icons.notifications, "Notifications", context),
+                      buildTile(Icons.privacy_tip, "Privacy", context),
 
                       buildSectionTitle("Support & About"),
-                      buildTile(Icons.subscriptions, "My Subscription"),
-                      buildTile(Icons.help_outline, "Help & Support"),
-                      buildTile(Icons.description, "Terms and Policies"),
+                      buildTile(
+                          Icons.subscriptions, "My Subscription", context),
+                      buildTile(Icons.help_outline, "Help & Support", context),
+                      buildTile(
+                          Icons.description, "Terms and Policies", context),
 
                       buildSectionTitle("Cache & Cellular"),
-                      buildTile(Icons.cleaning_services, "Free up space"),
-                      buildTile(Icons.data_saver_on, "Data Saver"),
+                      buildTile(
+                          Icons.cleaning_services, "Free up space", context),
+                      buildTile(Icons.data_saver_on, "Data Saver", context),
 
                       buildSectionTitle("Actions"),
-                      buildTile(Icons.bug_report, "Report a problem"),
-                      buildTile(Icons.person_add, "Add account"),
-                      buildTile(Icons.logout, "Log out"),
+                      buildTile(Icons.bug_report, "Report a problem", context),
+                      buildTile(Icons.person_add, "Add account", context),
+                      buildTile(Icons.logout, "Log out", context),
                     ],
                   ),
                 ),
@@ -115,7 +120,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  static Widget buildTile(IconData icon, String label) {
+  static Widget buildTile(IconData icon, String label, BuildContext context) {
     return Card(
       color: Colors.white.withOpacity(0.95),
       elevation: 2,
@@ -125,7 +130,14 @@ class SettingsPage extends StatelessWidget {
         leading: Icon(icon, color: Color(0xFF08557C)),
         title: Text(label, style: const TextStyle(color: Color(0xFF08557C))),
         onTap: () {
-          // TODO: Add navigation or functionality
+          // Navigate to the Security page when tapped
+          if (label == "Security") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SecurityPage()),
+            );
+          }
+          // TODO: Add navigation or functionality for other tiles
         },
       ),
     );
