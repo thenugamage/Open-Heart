@@ -57,7 +57,6 @@ class MySubscriptionPage extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                      // color: Colors.black,
                       // Optional border radius
                       ),
                   child: Image.asset(
@@ -74,6 +73,8 @@ class MySubscriptionPage extends StatelessWidget {
                   title: '1990',
                   raised: 'LKR 1,499,218',
                   goal: 'LKR 10,000,000',
+                  image:
+                      'Assets/aboutUS1.png', // Add path to your campaign image
                 ),
 
                 const SizedBox(height: 20),
@@ -83,6 +84,8 @@ class MySubscriptionPage extends StatelessWidget {
                   title: 'Lets Help Speak And Smile',
                   raised: 'LKR 599,218',
                   goal: 'LKR 1,000,000',
+                  image:
+                      'Assets/aboutUS2.png', // Add path to your campaign image
                 ),
 
                 const SizedBox(height: 30),
@@ -94,11 +97,12 @@ class MySubscriptionPage extends StatelessWidget {
     );
   }
 
-  // Campaign Card Widget (no percentage + white Donate More button)
+  // Campaign Card Widget (with an image and white Donate More button)
   static Widget _campaignCard({
     required String title,
     required String raised,
     required String goal,
+    required String image, // New image parameter
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -116,26 +120,17 @@ class MySubscriptionPage extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Placeholder Image Banner
+            // Image Banner for Campaign
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
               ),
-              child: Container(
+              child: Image.asset(
+                image, // Image added to each campaign
                 height: 160,
                 width: double.infinity,
-                color: Colors.black,
-                child: const Center(
-                  child: Text(
-                    'Image',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
+                fit: BoxFit.cover,
               ),
             ),
 
