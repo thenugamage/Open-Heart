@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'security.dart';
+import 'security.dart'; // Import the SecurityPage
+import 'notification.dart'; // Import the NotificationPage
+import 'profile.dart'; // Import the ProfilePage
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SettingsPage()));
@@ -40,25 +42,40 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
 
-              // Profile Section
+              // Profile Section with Profile Photo
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 color: Colors.transparent,
                 child: Row(
-                  children: const [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundColor: Color(0xFF08557C),
-                      child: Icon(Icons.person, color: Colors.white, size: 28),
+                  children: [
+                    // Profile Photo
+                    ClipOval(
+                      child: Image.asset(
+                        'Assets/profile photo.PNG',
+                        width: 48, // Adjust size as necessary
+                        height: 48, // Adjust size as necessary
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    SizedBox(width: 12),
-                    Text(
-                      'Yennefer Doe',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to Profile Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ProfilePage()), // Navigate to ProfilePage
+                        );
+                      },
+                      child: const Text(
+                        'Yennefer Doe',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ],
@@ -76,7 +93,8 @@ class SettingsPage extends StatelessWidget {
                       buildTile(Icons.edit, "Edit profile", context),
                       buildTile(Icons.lock, "Security",
                           context), // Security tile now navigates
-                      buildTile(Icons.notifications, "Notifications", context),
+                      buildTile(Icons.notifications, "Notifications",
+                          context), // Notifications tile navigates
                       buildTile(Icons.privacy_tip, "Privacy", context),
 
                       buildSectionTitle("Support & About"),
@@ -130,11 +148,16 @@ class SettingsPage extends StatelessWidget {
         leading: Icon(icon, color: Color(0xFF08557C)),
         title: Text(label, style: const TextStyle(color: Color(0xFF08557C))),
         onTap: () {
-          // Navigate to the Security page when tapped
+          // Navigate to the appropriate page based on the label
           if (label == "Security") {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SecurityPage()),
+            );
+          } else if (label == "Notifications") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const NotificationPage()),
             );
           }
           // TODO: Add navigation or functionality for other tiles
