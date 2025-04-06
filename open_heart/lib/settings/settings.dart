@@ -5,6 +5,8 @@ import 'profile.dart'; // Import the ProfilePage
 import 'data server.dart'; // Import the DataServerPage
 import 'free up space.dart'; // Import the FreeUpSpacePage
 import 'terms and policies.dart'; // Import the TermsAndPolicyPage
+import 'add acount.dart'; // Import the AddAccountPage
+import 'contact us.dart'; // Import the ContactUsPage
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SettingsPage()));
@@ -103,6 +105,8 @@ class SettingsPage extends StatelessWidget {
                       buildTile(Icons.help_outline, "Help & Support", context),
                       buildTile(Icons.description, "Terms and Policies",
                           context), // Links to TermsAndPolicyPage
+                      buildTile(Icons.contact_page, "Contact Us",
+                          context), // New tile
 
                       buildSectionTitle("Cache & Cellular"),
                       buildTile(
@@ -176,6 +180,16 @@ class SettingsPage extends StatelessWidget {
                   builder: (context) =>
                       const TermsAndPolicyPage()), // Navigate to TermsAndPolicyPage
             );
+          } else if (label == "Add account") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddAccountPage()),
+            ); // Navigate to AddAccountPage
+          } else if (label == "Contact Us") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ContactUsPage()),
+            ); // Navigate to ContactUsPage
           }
         },
       ),
