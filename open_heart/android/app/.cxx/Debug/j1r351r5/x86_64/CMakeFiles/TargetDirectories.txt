@@ -1,0 +1,2 @@
+D:/github/Open-Heart/open_heart/android/app/.cxx/Debug/j1r351r5/x86_64/CMakeFiles/edit_cache.dir
+D:/github/Open-Heart/open_heart/android/app/.cxx/Debug/j1r351r5/x86_64/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,2 @@
+D:/github/Open-Heart/open_heart/android/app/.cxx/Debug/j1r351r5/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/github/Open-Heart/open_heart/android/app/.cxx/Debug/j1r351r5/armeabi-v7a/CMakeFiles/rebuild_cache.dir
