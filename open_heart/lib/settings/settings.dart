@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'security.dart'; // Import the SecurityPage
 import 'notification.dart'; // Import the NotificationPage
 import 'profile.dart'; // Import the ProfilePage
+import 'data server.dart'; // Import the DataServerPage
+import 'free up space.dart'; // Import the FreeUpSpacePage
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SettingsPage()));
@@ -65,8 +67,7 @@ class SettingsPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProfilePage()), // Navigate to ProfilePage
+                              builder: (context) => const ProfilePage()),
                         );
                       },
                       child: const Text(
@@ -91,10 +92,8 @@ class SettingsPage extends StatelessWidget {
                     children: [
                       buildSectionTitle("Account"),
                       buildTile(Icons.edit, "Edit profile", context),
-                      buildTile(Icons.lock, "Security",
-                          context), // Security tile now navigates
-                      buildTile(Icons.notifications, "Notifications",
-                          context), // Notifications tile navigates
+                      buildTile(Icons.lock, "Security", context),
+                      buildTile(Icons.notifications, "Notifications", context),
                       buildTile(Icons.privacy_tip, "Privacy", context),
 
                       buildSectionTitle("Support & About"),
@@ -105,9 +104,10 @@ class SettingsPage extends StatelessWidget {
                           Icons.description, "Terms and Policies", context),
 
                       buildSectionTitle("Cache & Cellular"),
-                      buildTile(
-                          Icons.cleaning_services, "Free up space", context),
-                      buildTile(Icons.data_saver_on, "Data Saver", context),
+                      buildTile(Icons.cleaning_services, "Free up space",
+                          context), // Links to FreeUpSpacePage
+                      buildTile(Icons.data_saver_on, "Data Saver",
+                          context), // Links to DataServerPage
 
                       buildSectionTitle("Actions"),
                       buildTile(Icons.bug_report, "Report a problem", context),
@@ -159,8 +159,21 @@ class SettingsPage extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => const NotificationPage()),
             );
+          } else if (label == "Free up space") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const FreeUpSpacePage()), // Navigate to FreeUpSpacePage
+            );
+          } else if (label == "Data Saver") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const DataSaverPage()), // Navigate to DataServerPage
+            );
           }
-          // TODO: Add navigation or functionality for other tiles
         },
       ),
     );

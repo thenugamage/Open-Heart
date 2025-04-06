@@ -4,25 +4,27 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProfilePage(), // Updated to ProfilePage
+      home: ProfilePage(),
     ),
   );
 }
 
 class ProfilePage extends StatelessWidget {
-  // Updated class name to ProfilePage
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent, // Set the background to transparent
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
+            colors: [
+              Colors.white,
+              Color.fromARGB(255, 17, 125, 183)
+            ], // The gradient you requested
           ),
         ),
         child: SafeArea(
@@ -99,7 +101,8 @@ class ProfilePage extends StatelessWidget {
           style: const TextStyle(color: Colors.black), // ✅ black font
           decoration: InputDecoration(
             filled: true,
-            fillColor: Colors.white.withOpacity(0.3), // ✅ transparent bg
+            fillColor:
+                Colors.transparent, // Transparent background for the fields
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 12,
