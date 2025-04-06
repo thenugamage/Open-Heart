@@ -7,6 +7,12 @@ import 'free up space.dart'; // Import the FreeUpSpacePage
 import 'terms and policies.dart'; // Import the TermsAndPolicyPage
 import 'add acount.dart'; // Import the AddAccountPage
 import 'contact us.dart'; // Import the ContactUsPage
+import 'edit profile.dart'; // Import the EditProfilePage
+import 'help and support.dart'; // Import the HelpAndSupportPage
+import 'log out.dart'; // Import the LogOutPage
+import 'my subscription.dart'; // Import the MySubscriptionPage
+import 'privacy.dart'; // Import the PrivacyPage
+import 'report a problem.dart'; // Import the ReportProblemPage
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SettingsPage()));
@@ -190,6 +196,39 @@ class SettingsPage extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => const ContactUsPage()),
             ); // Navigate to ContactUsPage
+          } else if (label == "Edit profile") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const EditProfilePage()),
+            ); // Navigate to EditProfilePage
+          } else if (label == "Help & Support") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const HelpAndSupportPage()),
+            ); // Navigate to HelpAndSupportPage
+          } else if (label == "Log out") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LogoutPage()),
+            ); // Navigate to LogOutPage
+          } else if (label == "My Subscription") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const MySubscriptionPage()),
+            ); // Navigate to MySubscriptionPage
+          } else if (label == "Privacy") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PrivacyPage()),
+            ); // Navigate to PrivacyPage
+          } else if (label == "Report a problem") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ReportProblemPage()),
+            ); // Navigate to ReportProblemPage
           }
         },
       ),

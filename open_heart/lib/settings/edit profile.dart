@@ -95,9 +95,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Stack(
                   alignment: Alignment.bottomRight,
                   children: [
-                    const CircleAvatar(
+                    // Circle Avatar with profile picture from assets
+                    CircleAvatar(
                       radius: 55,
-                      backgroundImage: AssetImage('assets/profile.jpg'),
+                      backgroundImage: AssetImage(
+                          'Assets/profile photo.PNG'), // Update with correct asset
                     ),
                     Container(
                       padding: const EdgeInsets.all(6),

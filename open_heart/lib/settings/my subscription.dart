@@ -52,26 +52,22 @@ class MySubscriptionPage extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                // Logo placeholder
+                // Logo from Assets (Square)
                 Container(
-                  width: 80,
-                  height: 80,
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "LOGO",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                      // color: Colors.black,
+                      // Optional border radius
                       ),
-                    ),
+                  child: Image.asset(
+                    'Assets/logo.png', // Ensure this is the correct path to your image
+                    fit: BoxFit
+                        .cover, // Make sure the image fits within the square
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 33),
 
                 // Campaign 1
                 _campaignCard(
