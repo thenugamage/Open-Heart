@@ -1,5 +1,7 @@
-//created by Thenuri
+// created by Thenuri
 import 'package:flutter/material.dart';
+import 'payment.dart'; // <-- For navigation
+import 'navigationbar.dart'; // <-- Import your custom nav bar
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,7 +9,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          // You can add navigation logic here if needed
+        },
+      ),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -21,35 +28,17 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 50),
-
-              // **Top Menu & Search Icons**
               _buildTopBar(),
-
               const SizedBox(height: 20),
-
-              // **Leaderboard**
               _buildLeaderboard(),
-
               const SizedBox(height: 20),
-
-              // **Main Banner**
-              _buildBanner(),
-
+              _buildBanner(context),
               const SizedBox(height: 20),
-
-              // **Category Icons**
               _buildCategoryIcons(),
-
               const SizedBox(height: 20),
-
-              // **Support & Start Donation Buttons**
-              _buildDonationButtons(),
-
+              _buildDonationButtons(context),
               const SizedBox(height: 20),
-
-              // **Search & Filter Section**
               _buildSearchAndFilters(),
-
               const SizedBox(height: 30),
             ],
           ),
@@ -58,13 +47,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Top Bar (Menu & Search)**
   Widget _buildTopBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: const [
           Icon(Icons.menu, size: 30, color: Colors.black),
           Icon(Icons.search, size: 30, color: Colors.black),
         ],
@@ -72,7 +60,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Leaderboard**
   Widget _buildLeaderboard() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -99,23 +86,26 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _leaderboardProfile(String name, String score, String imgPath, [bool isTop = false]) {
+  Widget _leaderboardProfile(String name, String score, String imgPath,
+      [bool isTop = false]) {
     return Column(
       children: [
         CircleAvatar(
           radius: isTop ? 30 : 25,
           backgroundImage: AssetImage(imgPath),
         ),
-        Text(name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        Text(score, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-        if (isTop)
-          Icon(Icons.star, color: Colors.yellow, size: 20),
+        Text(name,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+        Text(score,
+            style: const TextStyle(
+                color: Colors.blue, fontWeight: FontWeight.bold)),
+        if (isTop) const Icon(Icons.star, color: Colors.yellow, size: 20),
       ],
     );
   }
 
-  // **Banner Section**
-  Widget _buildBanner() {
+  Widget _buildBanner(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: ClipRRect(
@@ -151,7 +141,13 @@ class HomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PaymentPage()),
+                    );
+                  },
                   child: const Text("Start Now"),
                 ),
               ],
@@ -162,7 +158,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Category Icons Section**
   Widget _buildCategoryIcons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -178,6 +173,7 @@ class HomePage extends StatelessWidget {
   Widget _categoryIcon(IconData icon, String title) {
     return Column(
       children: [
+        const SizedBox(height: 5),
         CircleAvatar(
           backgroundColor: Colors.white,
           radius: 28,
@@ -192,27 +188,31 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Donation Buttons**
-  Widget _buildDonationButtons() {
+  Widget _buildDonationButtons(BuildContext context) {
     return Column(
       children: [
-        _donationButton("Support A Donation Campaign"),
+        _donationButton("Support A Donation Campaign", context),
         const SizedBox(height: 10),
-        _donationButton("Start A Donation Campaign"),
+        _donationButton("Start A Donation Campaign", context),
       ],
     );
   }
 
-  Widget _donationButton(String text) {
+  Widget _donationButton(String text, BuildContext context) {
     return SizedBox(
       width: 300,
       height: 45,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Colors.black),
+          side: const BorderSide(color: Colors.black),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PaymentPage()),
+          );
+        },
         child: Text(
           text,
           style: const TextStyle(fontSize: 14, color: Colors.black),
@@ -221,7 +221,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Search & Filters**
   Widget _buildSearchAndFilters() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -251,7 +250,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Search Bar**
   Widget _searchBox() {
     return Container(
       width: 250,
@@ -274,7 +272,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // **Filter Buttons**
   Widget _filterButton(IconData icon, String text) {
     return SizedBox(
       width: 180,
@@ -286,24 +283,9 @@ class HomePage extends StatelessWidget {
         ),
         onPressed: () {},
         icon: Icon(icon, color: Colors.white, size: 16),
-        label: Text(text, style: const TextStyle(fontSize: 14, color: Colors.white)),
+        label: Text(text,
+            style: const TextStyle(fontSize: 14, color: Colors.white)),
       ),
-    );
-  }
-
-  // **Bottom Navigation Bar**
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.blue.shade900,
-      unselectedItemColor: Colors.black,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.category), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-      ],
     );
   }
 }

@@ -1,0 +1,2 @@
+C:/Cgp/Open-Heart/open_heart/android/app/.cxx/Debug/115n2w5z/x86_64/CMakeFiles/edit_cache.dir
+C:/Cgp/Open-Heart/open_heart/android/app/.cxx/Debug/115n2w5z/x86_64/CMakeFiles/rebuild_cache.dir

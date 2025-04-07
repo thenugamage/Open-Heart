@@ -1,7 +1,5 @@
 // created by Thenuri
 import 'package:flutter/material.dart';
-import 'main.dart';
-
 
 class FeaturedInitiativesPage extends StatefulWidget {
   const FeaturedInitiativesPage({super.key});
@@ -25,7 +23,7 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white,  Color.fromARGB(255, 17, 125, 183)],
+            colors: [Colors.white, Color.fromARGB(255, 17, 125, 183)],
           ),
         ),
         child: Column(

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'signup.dart';
 import 'home.dart';
 
@@ -14,7 +13,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
- final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
@@ -38,7 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      
+
       // Authentication successful, navigate to home screen
       if (mounted) {
         Navigator.push(
@@ -95,7 +94,8 @@ class _SignInScreenState extends State<SignInScreen> {
       }
 
       // Obtain the auth details from the Google user
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final OAuthCredential credential = GoogleAuthProvider.credential(
@@ -119,7 +119,8 @@ class _SignInScreenState extends State<SignInScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_errorMessage ?? "An error occurred during Google sign in"),
+          content:
+              Text(_errorMessage ?? "An error occurred during Google sign in"),
           backgroundColor: Colors.red,
         ),
       );
@@ -164,7 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -193,56 +194,59 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-                  /// Email & Password Fields
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
-                      children: [
-                        TextField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: "Your Email",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        TextField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: "Password",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
 
-                  // Error message display
-                  if (_errorMessage != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, left: 30, right: 30),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red, fontSize: 12),
-                        textAlign: TextAlign.center,
+              /// Email & Password Fields
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Your Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
                       ),
                     ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-                  const SizedBox(height: 20),
+              // Error message display
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 30, right: 30),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+              const SizedBox(height: 20),
 
               // Continue Button
               SizedBox(
@@ -265,14 +269,14 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(height: 40),
 
               // OR Text
-                const Text(
+              const Text(
                 "or continue with",
                 style: TextStyle(
                   color: Color(0xFF08385F),
                   fontSize: 16,
                 ),
-                ),
-                const SizedBox(height: 40),
+              ),
+              const SizedBox(height: 40),
 
               // Google Sign-In Buttona
               SizedBox(
@@ -283,7 +287,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   icon: Image.asset("Assets/google.png", height: 24),
                   label: const Text(
                     "Sign In with Google",
-                    style: TextStyle(color: Color.fromARGB(255, 103, 143, 209), fontSize: 18),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 103, 143, 209),
+                        fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -310,7 +316,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       TextSpan(
                         text: "Create Account",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -323,4 +330,3 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
-
