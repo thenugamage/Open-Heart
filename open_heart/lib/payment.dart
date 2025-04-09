@@ -105,10 +105,16 @@ class _PaymentPageState extends State<PaymentPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 ListTile(
                   leading: const CircleAvatar(
                     backgroundImage:
-                        NetworkImage('https://i.imgur.com/JustLogo.png'),
+                        AssetImage('Assets/profile.png'), // ✅ replaced
                   ),
                   title: RichText(
                     text: const TextSpan(
@@ -181,7 +187,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ListTile(
                   leading: const CircleAvatar(
                     backgroundImage:
-                        NetworkImage('https://i.imgur.com/BoN9kdC.png'),
+                        AssetImage('Assets/hoster.png'), // ✅ replaced
                   ),
                   title: const Text(
                     '1990 Suwa Seriya Foundation',
@@ -197,19 +203,24 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
+
+                // ✅ Main campaign image (replaced network with asset)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://i.imgur.com/JqKDdxj.jpeg',
+                    child: Image.asset(
+                      'Assets/aboutUS1.png',
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
+                // ✅ Donate button
                 Center(
                   child: ElevatedButton(
                     onPressed: () {

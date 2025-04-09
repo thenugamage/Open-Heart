@@ -1,7 +1,7 @@
-// created by Thenuri
 import 'package:flutter/material.dart';
+import 'leaderboard.dart'; // <-- Import the leaderboard page
 import 'payment.dart'; // <-- For navigation
-import 'navigationbar.dart'; // <-- Import your custom nav bar
+import 'navigationbar.dart'; // <-- Import the CustomNavigationBar
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,12 +9,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          // You can add navigation logic here if needed
-        },
-      ),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -28,7 +22,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              _buildTopBar(),
+              _buildTopBar(context), // Pass context to TopBar
               const SizedBox(height: 20),
               _buildLeaderboard(),
               const SizedBox(height: 20),
@@ -44,17 +38,36 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar:
+          const CustomNavigationBar(), // <-- Add the CustomNavigationBar here
     );
   }
 
-  Widget _buildTopBar() {
+  Widget _buildTopBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          Icon(Icons.menu, size: 30, color: Colors.black),
-          Icon(Icons.search, size: 30, color: Colors.black),
+        children: [
+          IconButton(
+            icon: const Icon(Icons.menu, size: 30, color: Colors.black),
+            onPressed: () {},
+          ),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage(
+                    'Assets/profile.png'), // Your uploaded image path
+              ),
+              const SizedBox(width: 10), // Space between the avatar and text
+              const Text(
+                "Hello Saduni Silva!",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const Icon(Icons.search, size: 30, color: Colors.black),
         ],
       ),
     );
@@ -75,9 +88,10 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _leaderboardProfile("Jackson", "2000", "Assets/user1.png"),
-                _leaderboardProfile("Eiden", "2430", "Assets/user2.png", true),
-                _leaderboardProfile("Emma Aria", "1674", "Assets/user3.png"),
+                _leaderboardProfile("Jackson", "2000", "Assets/profile1.png"),
+                _leaderboardProfile(
+                    "Eiden", "2430", "Assets/profile2.png", true),
+                _leaderboardProfile("Emma Aria", "1674", "Assets/profile3.png"),
               ],
             ),
           ),
@@ -142,10 +156,11 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    // Navigate to leaderboard when "Start Now" button is clicked
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const PaymentPage()),
+                          builder: (context) => const LeaderboardPage()),
                     );
                   },
                   child: const Text("Start Now"),

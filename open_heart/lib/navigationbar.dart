@@ -1,62 +1,63 @@
 import 'package:flutter/material.dart';
+import 'leaderboard.dart';
+// <-- Import the LeaderboardPage
 
-class CustomNavigationBar extends StatelessWidget {
-  final int currentIndex;
-  final Function(int) onTap;
+class CustomNavigationBar extends StatefulWidget {
+  const CustomNavigationBar({super.key});
 
-  const CustomNavigationBar({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-  });
+  @override
+  _CustomNavigationBarState createState() => _CustomNavigationBarState();
+}
+
+class _CustomNavigationBarState extends State<CustomNavigationBar> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      // Building icon is at index 1
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LeaderboardPage()),
+      );
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 70,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      items: [
+        const BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        const BottomNavigationBarItem(
+            icon: Icon(Icons.location_city), label: ''), // Building icon
+        BottomNavigationBarItem(
+          icon: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black26, blurRadius: 4, offset: Offset(2, 2))
+              ],
+            ),
+            padding: const EdgeInsets.all(8),
+            child: const Icon(Icons.volunteer_activism,
+                size: 30, color: Colors.white),
+          ),
+          label: '',
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTap,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        selectedItemColor: Colors.orange.shade800,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 28),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events, size: 28), // Leaderboard alternative
-            label: 'Rank',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.volunteer_activism, size: 28), // Donate
-            label: 'Donate',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings, size: 28), // Profile/Settings
-            label: 'Profile',
-          ),
-        ],
-      ),
+        const BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
+        const BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+      ],
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.orange,
+      unselectedItemColor: Colors.grey,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
     );
   }
 }
