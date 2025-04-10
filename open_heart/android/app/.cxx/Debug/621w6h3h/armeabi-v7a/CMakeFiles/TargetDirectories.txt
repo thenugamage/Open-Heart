@@ -1,0 +1,2 @@
+C:/Cgp/Open-Heart/open_heart/android/app/.cxx/Debug/621w6h3h/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Cgp/Open-Heart/open_heart/android/app/.cxx/Debug/621w6h3h/armeabi-v7a/CMakeFiles/rebuild_cache.dir

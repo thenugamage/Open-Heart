@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'signin.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -16,11 +15,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
   bool _isLoading = false;
   String? _errorMessage;
-  
+
   // Track which step of signup we're on (1: email, 2: password & name)
   int _currentStep = 1;
 
@@ -35,7 +35,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // Validate email in first step
   bool _validateEmail() {
-    if (_emailController.text.trim().isEmpty || !_isValidEmail(_emailController.text.trim())) {
+    if (_emailController.text.trim().isEmpty ||
+        !_isValidEmail(_emailController.text.trim())) {
       setState(() {
         _errorMessage = "Please enter a valid email";
       });
@@ -43,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
     return true;
   }
-  
+
   // Validate all inputs for final sign up
   bool _validateInputs() {
     if (_nameController.text.trim().isEmpty) {
@@ -52,24 +53,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return false;
     }
-    
-    if (_passwordController.text.isEmpty || _passwordController.text.length < 6) {
+
+    if (_passwordController.text.isEmpty ||
+        _passwordController.text.length < 6) {
       setState(() {
         _errorMessage = "Password must be at least 6 characters";
       });
       return false;
     }
-    
+
     if (_passwordController.text != _confirmPasswordController.text) {
       setState(() {
         _errorMessage = "Passwords do not match";
       });
       return false;
     }
-    
+
     return true;
   }
-  
+
   bool _isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
@@ -79,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _errorMessage = null;
     });
-    
+
     if (_currentStep == 1) {
       if (_validateEmail()) {
         setState(() {
@@ -97,25 +99,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!_validateInputs()) {
       return;
     }
-    
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
     try {
       // Create user with email and password
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
-      
+
       // Update display name
       await userCredential.user?.updateDisplayName(_nameController.text.trim());
-      
+
       // Send email verification
       await userCredential.user?.sendEmailVerification();
-      
+
       // Navigate to verification screen
       if (mounted) {
         Navigator.pushReplacement(
@@ -151,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
   }
-  
+
   // Google sign in method
   Future<void> _signInWithGoogle() async {
     setState(() {
@@ -173,7 +176,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
 
       // Obtain the auth details from the Google user
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final OAuthCredential credential = GoogleAuthProvider.credential(
@@ -197,7 +201,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_errorMessage ?? "An error occurred during Google sign in"),
+          content:
+              Text(_errorMessage ?? "An error occurred during Google sign in"),
           backgroundColor: Colors.red,
         ),
       );
@@ -219,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
   }
-  
+
   // Convert Firebase error codes to user-friendly messages
   String _getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
@@ -266,201 +271,209 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   color: Color(0xFF08385F),
                 ),
               ),
-                         const SizedBox(height: 20),
-                  /// Form Fields
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        if (_currentStep == 1) ...[
-                          // Step 1: Email
-                          TextField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "Your Email",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                            ),
-                          ),
-                        ] else ...[
-                          // Step 2: Name & Password
-                          TextField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "Your Name",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "Password",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          TextField(
-                            controller: _confirmPasswordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "Confirm Password",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
+              const SizedBox(height: 20),
 
-                  // Error message display
-                  if (_errorMessage != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, left: 30, right: 30),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red, fontSize: 12),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                  const SizedBox(height: 40),
-
-                  /// Continue Button
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      width: 250,
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : _continueToNextStep,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF013F68),
-                          shape: RoundedRectangleBorder(
+              /// Form Fields
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    if (_currentStep == 1) ...[
+                      // Step 1: Email
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Your Email",
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          side: const BorderSide(
-                            width: 2,
-                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
                         ),
-                        child: _isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Text(
-                                _currentStep == 1 ? "Continue" : "Sign Up",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
+                      ),
+                    ] else ...[
+                      // Step 2: Name & Password
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Your Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      TextField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Confirm Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+
+              // Error message display
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 30, right: 30),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+              const SizedBox(height: 40),
+
+              /// Continue Button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SizedBox(
+                  width: 250,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _continueToNextStep,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF013F68),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      side: const BorderSide(
+                        width: 2,
+                      ),
+                    ),
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text(
+                            _currentStep == 1 ? "Continue" : "Sign Up",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+
+              // Only show Google sign-in option in step 1
+              if (_currentStep == 1) ...[
+                const SizedBox(height: 20),
+
+                /// "Or continue with" text
+                const Text(
+                  "or continue with",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                /// Google Sign In Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: SizedBox(
+                    width: 250,
+                    child: ElevatedButton.icon(
+                      onPressed: _isLoading ? null : _signInWithGoogle,
+                      icon: Image.asset(
+                        'Assets/google.png',
+                        height: 24,
+                      ),
+                      label: const Text(
+                        "Sign In with Google",
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        side: const BorderSide(
+                          color: Colors.black26,
+                          width: 1,
+                        ),
                       ),
                     ),
                   ),
+                ),
+              ],
 
-                  // Only show Google sign-in option in step 1
-                  if (_currentStep == 1) ...[
-                    const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-                    /// "Or continue with" text
-                    const Text(
-                      "or continue with",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-
-                    /// Google Sign In Button
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: SizedBox(
-                        width: 250,
-                        child: ElevatedButton.icon(
-                          onPressed: _isLoading ? null : _signInWithGoogle,
-                          icon: Image.asset(
-                            'Assets/google.png',
-                            height: 24,
-                          ),
-                          label: const Text(
-                            "Sign In with Google",
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            side: const BorderSide(
-                              color: Colors.black26,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-
-                  const SizedBox(height: 20),
-
-                  /// Already Have an Account? Sign In Link
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignInScreen()),
-                      );
-                    },
-                    child: const Text.rich(
+              /// Already Have an Account? Sign In Link
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()),
+                  );
+                },
+                child: const Text.rich(
                   TextSpan(
                     text: "Have an Account? ",
                     style: TextStyle(color: Color(0xFF135A95), fontSize: 14),
                     children: [
                       TextSpan(
                         text: "Sign In",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                  ),
-                  
-                  const SizedBox(height: 20),
-                ],
               ),
-            ),
+
+              const SizedBox(height: 20),
+            ],
           ),
-    );  }
+        ),
+      ),
+    );
+  }
 }
