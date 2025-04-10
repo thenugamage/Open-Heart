@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'leaderboard.dart'; // <-- Import the leaderboard page
-import 'payment.dart'; // <-- For navigation
-import 'navigationbar.dart'; // <-- Import the CustomNavigationBar
+import 'leaderboard.dart';
+import 'payment.dart';
+import 'navigationbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              _buildTopBar(context), // Pass context to TopBar
+              _buildTopBar(context),
               const SizedBox(height: 20),
               _buildLeaderboard(),
               const SizedBox(height: 20),
@@ -38,8 +38,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar:
-          const CustomNavigationBar(), // <-- Add the CustomNavigationBar here
+      bottomNavigationBar: const CustomNavigationBar(), // now handles settings
     );
   }
 
@@ -55,12 +54,11 @@ class HomePage extends StatelessWidget {
           ),
           Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage(
-                    'Assets/profile.png'), // Your uploaded image path
+                backgroundImage: AssetImage('Assets/profile.png'),
               ),
-              const SizedBox(width: 10), // Space between the avatar and text
+              const SizedBox(width: 10),
               const Text(
                 "Hello Saduni Silva!",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -156,7 +154,6 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Navigate to leaderboard when "Start Now" button is clicked
                     Navigator.push(
                       context,
                       MaterialPageRoute(
