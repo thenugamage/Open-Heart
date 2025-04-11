@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'signin.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,7 +15,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController()
+  final TextEditingController _passwordController = TextEditingController();
 
   final TextEditingController _confirmPasswordController = TextEditingController();
   
@@ -390,55 +390,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
-
-                  const SizedBox(height: 20),
-
-                  /// Already Have an Account? Sign In Link
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignInScreen()),
-                      );
-                    },
-                    child: const Text.rich(
-                  TextSpan(
-                    text: "Have an Account? ",
-                    style: TextStyle(color: Color(0xFF135A95), fontSize: 14),
-                    children: [
-                      TextSpan(
-                        text: "Sign In",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                      ),
                     ],
+
                     const SizedBox(height: 20),
+
+                    /// Already Have an Account? Sign In Link
                     GestureDetector(
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignInScreen()),
+                          MaterialPageRoute(builder: (context) => const SignInScreen()),
                         );
                       },
                       child: const Text.rich(
                         TextSpan(
                           text: "Have an Account? ",
-                          style: TextStyle(
-                              color: Color(0xFF135A95), fontSize: 14),
+                          style: TextStyle(color: Color(0xFF135A95), fontSize: 14),
                           children: [
                             TextSpan(
                               text: "Sign In",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),
