@@ -1,6 +1,6 @@
 //created by thenuri
 import 'package:flutter/material.dart';
-import 'signin.dart';
+import 'selection.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -85,7 +85,7 @@ class IntroPage extends StatelessWidget {
                   // Navigate to SignInScreen when button is pressed
                   Navigator.push(
                     context, 
-                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                    MaterialPageRoute(builder: (context) => SelectionScreen()),
                   );
                 },
                 child: const Text(
