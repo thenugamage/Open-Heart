@@ -79,21 +79,19 @@ class _SelectionScreenState extends State<SelectionScreen> {
                   /// Logo
                   Image.asset("Assets/logo.png", height: 100),
 
-                  const SizedBox(height: 10),
-
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50),
 
                   /// Page Title
                   const Text(
                     "Selection",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF08385F),
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 50),
 
                   // User Button
                   SizedBox(
@@ -119,7 +117,7 @@ class _SelectionScreenState extends State<SelectionScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 40),
 
                   // Admin Panel Button
                   SizedBox(
