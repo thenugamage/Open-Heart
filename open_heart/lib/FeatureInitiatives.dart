@@ -12,9 +12,6 @@ class FeaturedInitiativesPage extends StatefulWidget {
 }
 
 class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
-  final PageController _pageController = PageController();
-  int _currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,12 +63,12 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
             ),
             const SizedBox(height: 20),
 
-            // StreamBuilder for fetching data dynamically
+            // Donation cards list
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('donations')
-                    .snapshots(), // Fetch all donation documents
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -83,52 +80,29 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
 
                   final donations = snapshot.data?.docs ?? [];
 
-                  return PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                    children: donations.map((doc) {
-                      return SingleChildScrollView(
-                        child: _buildDonationCard(
-                          image: doc['imageUrl'], // Using Firestore field
-                          title: doc['title'],
-                          description: doc['description'],
-                          progress: doc['progress'],
-                          raised: doc['raised'],
-                          goal: doc['goal'],
-                          bgColor: Colors.blue.shade100, // Modify as needed
-                          label1: doc['label1'],
-                          label2: doc['label2'],
-                          organization: doc['organization'],
-                        ),
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    itemCount: donations.length,
+                    itemBuilder: (context, index) {
+                      final doc = donations[index];
+                      return _buildDonationCard(
+                        image: doc[
+                            'imageUrl'], // Local asset path like Assets/donation1.png
+                        title: doc['title'],
+                        description: doc['description'],
+                        progress: doc['progress'],
+                        raised: doc['raised'],
+                        goal: doc['goal'],
+                        bgColor: Colors.blue.shade100,
+                        label1: doc['label1'],
+                        label2: doc['label2'],
+                        organization: doc['organization'],
                       );
-                    }).toList(),
+                    },
                   );
                 },
               ),
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                1,
-                (index) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentIndex == index
-                        ? Colors.blue.shade900
-                        : Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -148,9 +122,8 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
     String organization = "Islandwide",
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(20),
@@ -283,22 +256,17 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Raised : ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    raised,
-                    style: const TextStyle(fontSize: 14, color: Colors.black),
-                  ),
-                  const Text(
-                    "Goal : ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    goal,
-                    style: const TextStyle(fontSize: 14, color: Colors.teal),
-                  ),
+                  const Text("Raised : ",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  Text(raised,
+                      style:
+                          const TextStyle(fontSize: 14, color: Colors.black)),
+                  const Text("Goal : ",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  Text(goal,
+                      style: const TextStyle(fontSize: 14, color: Colors.teal)),
                 ],
               ),
             ),
@@ -313,8 +281,7 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PaymentPage(),
-                      ),
+                          builder: (context) => const PaymentPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -323,10 +290,8 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    "Donate Now",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
+                  child: const Text("Donate Now",
+                      style: TextStyle(color: Colors.white, fontSize: 14)),
                 ),
               ),
             ),
