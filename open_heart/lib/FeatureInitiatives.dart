@@ -7,7 +7,7 @@ class FeaturedInitiativesPage extends StatefulWidget {
   const FeaturedInitiativesPage({super.key});
 
   @override
-  _FeaturedInitiativesPageState createState() =>
+  State<FeaturedInitiativesPage> createState() =>
       _FeaturedInitiativesPageState();
 }
 
@@ -56,14 +56,11 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
             const Text(
               "Featured Initiatives",
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             const SizedBox(height: 20),
-
-            // Donation cards list
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
@@ -81,13 +78,12 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
                   final donations = snapshot.data?.docs ?? [];
 
                   return ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 20),
                     itemCount: donations.length,
                     itemBuilder: (context, index) {
                       final doc = donations[index];
                       return _buildDonationCard(
-                        image: doc[
-                            'imageUrl'], // Local asset path like Assets/donation1.png
+                        context: context,
+                        image: doc['imageUrl'],
                         title: doc['title'],
                         description: doc['description'],
                         progress: doc['progress'],
@@ -97,12 +93,14 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
                         label1: doc['label1'],
                         label2: doc['label2'],
                         organization: doc['organization'],
+                        donationDoc: doc,
                       );
                     },
                   );
                 },
               ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -110,6 +108,7 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
   }
 
   Widget _buildDonationCard({
+    required BuildContext context,
     required String image,
     required String title,
     required String description,
@@ -120,6 +119,7 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
     String? label1,
     String? label2,
     String organization = "Islandwide",
+    required DocumentSnapshot donationDoc,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
@@ -139,10 +139,8 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [
@@ -153,151 +151,106 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
                     fit: BoxFit.cover,
                   ),
                   if (label1 != null || label2 != null)
-                    Positioned(
-                      top: 10,
-                      right: 10,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           if (label1 != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Colors.black87,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Text(
-                                label1,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
-                            ),
-                          const SizedBox(height: 5),
-                          if (label2 != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Text(
-                                label2,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
-                            ),
+                            _buildLabel(label1, Colors.black87),
+                          if (label2 != null) _buildLabel(label2, Colors.green),
                         ],
                       ),
                     ),
                 ],
               ),
             ),
+            _buildCardDetails(
+                title, description, progress, raised, goal, organization),
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              padding: const EdgeInsets.all(15),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentPage(donation: donationDoc),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue.shade800,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: const Center(
+                  child: Text(
+                    'Donate Now',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                children: [
-                  const Icon(Icons.verified_user,
-                      size: 16, color: Colors.black54),
-                  const SizedBox(width: 5),
-                  Text(
-                    organization,
-                    style: const TextStyle(fontSize: 12, color: Colors.black87),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 8, 15, 5),
-              child: Text(
-                description,
-                style: const TextStyle(fontSize: 12, color: Colors.black54),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * progress * 0.75,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade900,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Raised : ",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                  Text(raised,
-                      style:
-                          const TextStyle(fontSize: 14, color: Colors.black)),
-                  const Text("Goal : ",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                  Text(goal,
-                      style: const TextStyle(fontSize: 14, color: Colors.teal)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PaymentPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3F3F2F),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text("Donate Now",
-                      style: TextStyle(color: Colors.white, fontSize: 14)),
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
+            )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLabel(String text, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(color: Colors.white, fontSize: 12),
+      ),
+    );
+  }
+
+  Widget _buildCardDetails(String title, String description, double progress,
+      String raised, String goal, String organization) {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              const Icon(Icons.verified_user, size: 16, color: Colors.black54),
+              const SizedBox(width: 5),
+              Text(organization, style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Text(description, style: const TextStyle(fontSize: 12)),
+          const SizedBox(height: 10),
+          LinearProgressIndicator(
+            value: progress,
+            backgroundColor: Colors.grey.shade300,
+            color: Colors.blue.shade900,
+            minHeight: 8,
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Raised: $raised",
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text("Goal: $goal", style: const TextStyle(color: Colors.teal)),
+            ],
+          ),
+        ],
       ),
     );
   }
