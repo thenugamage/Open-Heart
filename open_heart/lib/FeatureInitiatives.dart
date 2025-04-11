@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'navigationbar.dart';
 import 'payment.dart';
-// ✅ Import the payment screen
 
 class FeaturedInitiativesPage extends StatefulWidget {
   const FeaturedInitiativesPage({super.key});
@@ -65,46 +65,49 @@ class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
               ),
             ),
             const SizedBox(height: 20),
+
+            // StreamBuilder for fetching data dynamically
             Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('donations')
+                    .snapshots(), // Fetch all donation documents
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  final donations = snapshot.data?.docs ?? [];
+
+                  return PageView(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    children: donations.map((doc) {
+                      return SingleChildScrollView(
+                        child: _buildDonationCard(
+                          image: doc['imageUrl'], // Using Firestore field
+                          title: doc['title'],
+                          description: doc['description'],
+                          progress: doc['progress'],
+                          raised: doc['raised'],
+                          goal: doc['goal'],
+                          bgColor: Colors.blue.shade100, // Modify as needed
+                          label1: doc['label1'],
+                          label2: doc['label2'],
+                          organization: doc['organization'],
+                        ),
+                      );
+                    }).toList(),
+                  );
                 },
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildDonationCard(
-                          image: "Assets/aboutUS1.png",
-                          title: "Suwaseriya Appeal",
-                          description:
-                              "Suwaseriya Sri Lanka, The Nation's Free Nationwide Emergency Ambulance Service...",
-                          progress: 0.15,
-                          raised: "LKR 1,499,218",
-                          goal: "LKR 10,000,000",
-                          bgColor: Colors.blue.shade100,
-                        ),
-                        const SizedBox(height: 20),
-                        _buildDonationCard(
-                          image: "Assets/aboutUS2.png",
-                          title: "Lets Help Speak And Smile",
-                          description:
-                              "A Baby Boy With Bilateral Cleft Lip And Palate Needs Urgent Surgery To Improve His Speech",
-                          progress: 0.6,
-                          raised: "LKR 599,218",
-                          goal: "LKR 1,000,000",
-                          bgColor: const Color(0xFFC6E3C5),
-                          label1: "Donate To Children",
-                          label2: "Double Your Donation",
-                          organization: "MedicalAid.lk",
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
               ),
             ),
             const SizedBox(height: 20),
