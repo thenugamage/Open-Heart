@@ -1,3 +1,4 @@
+// Created by Thenuri
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'verfication.dart';
@@ -51,6 +52,7 @@ class VerificationFailedScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // **Logo**
               Image.asset("Assets/logo.png", height: 104),
               const SizedBox(height: 50),
               Image.asset("Assets/sad-face.png", height: 132), // Added sad-face image
