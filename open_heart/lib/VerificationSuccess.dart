@@ -1,3 +1,4 @@
+// Created by Thenuri
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -22,6 +23,7 @@ class VerificationSuccessScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // **Logo**
               Image.asset("Assets/logo.png", height: 105),
               const SizedBox(height: 20),
               const Text(

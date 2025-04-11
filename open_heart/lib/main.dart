@@ -19,4 +19,6 @@ class MyApp extends StatelessWidget {
       home: IntroPage(),
     );
   }
+
 }
+

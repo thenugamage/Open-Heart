@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'signup.dart';
 import 'home.dart';
 
@@ -25,6 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  // Email sign in method
   Future<void> _signInWithEmailAndPassword() async {
     setState(() {
       _isLoading = true;
@@ -36,6 +38,9 @@ class _SignInScreenState extends State<SignInScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      
+      // Authentication successful, navigate to home screen
       if (mounted) {
         Navigator.push(
           context,
@@ -71,32 +76,41 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  // Google sign in method
   Future<void> _signInWithGoogle() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
     try {
+
+      // Initialize Google Sign In
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
+
+        // User canceled the sign-in process
         setState(() {
           _isLoading = false;
         });
         return;
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      // Obtain the auth details from the Google user
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
+      // Create a new credential
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
+      // Sign in with the credential
       await FirebaseAuth.instance.signInWithCredential(credential);
 
+
+      // Authentication successful, navigate to verification screen
       if (mounted) {
         Navigator.push(
           context,
@@ -133,6 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  // Convert Firebase error codes to user-friendly messages
   String _getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
       case "invalid-email":
@@ -154,7 +169,7 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -355,3 +370,4 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
+

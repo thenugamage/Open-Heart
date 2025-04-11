@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'signin.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -14,12 +15,15 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _passwordController = TextEditingController()
 
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  
   bool _isLoading = false;
   String? _errorMessage;
+  
+  // Track which step of signup we're on (1: email, 2: password & name)
+
   int _currentStep = 1;
 
   @override
@@ -113,13 +117,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _errorMessage = _getMessageFromErrorCode(e.code);
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_errorMessage!), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text(_errorMessage ?? "An error occurred during sign up"),
+          backgroundColor: Colors.red,
+        ),
       );
     } catch (e) {
       setState(() {
         _errorMessage = "An error occurred. Please try again later.";
       });
       ScaffoldMessenger.of(context).showSnackBar(
+
         SnackBar(content: Text(_errorMessage!), backgroundColor: Colors.red),
       );
     } finally {
@@ -136,10 +144,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     try {
+
+      // Initialize Google Sign In
+
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
+
         setState(() => _isLoading = false);
         return;
       }
@@ -152,8 +164,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         idToken: googleAuth.idToken,
       );
 
+      // Sign in with the credential
       await FirebaseAuth.instance.signInWithCredential(credential);
 
+      // Authentication successful, navigate to verification screen
       if (mounted) {
         Navigator.push(
           context,
@@ -165,13 +179,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _errorMessage = _getMessageFromErrorCode(e.code);
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_errorMessage!), backgroundColor: Colors.red),
+
+        SnackBar(
+          content: Text(_errorMessage ?? "An error occurred during Google sign in"),
+          backgroundColor: Colors.red,
+        ),
+
       );
     } catch (e) {
       setState(() {
         _errorMessage = "An error occurred. Please try again later.";
       });
       ScaffoldMessenger.of(context).showSnackBar(
+
         SnackBar(content: Text(_errorMessage!), backgroundColor: Colors.red),
       );
     } finally {
@@ -180,6 +200,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
   }
+
 
   String _getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
@@ -213,6 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 end: Alignment.bottomCenter,
                 colors: [Colors.white, Color(0xFF117DB7)],
               ),
+
             ),
           ),
 
@@ -305,6 +327,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     const SizedBox(height: 40),
                     SizedBox(
+
                       width: 250,
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _continueToNextStep,
@@ -315,6 +338,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           side: const BorderSide(width: 2),
+
                         ),
                         child: _isLoading
                             ? const SizedBox(
@@ -357,14 +381,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 15),
+
+                            padding: const EdgeInsets.symmetric(vertical: 15),
                             side: const BorderSide(
                               color: Colors.black26,
                               width: 1,
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                  ],
+
+                  const SizedBox(height: 20),
+
+                  /// Already Have an Account? Sign In Link
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignInScreen()),
+                      );
+                    },
+                    child: const Text.rich(
+                  TextSpan(
+                    text: "Have an Account? ",
+                    style: TextStyle(color: Color(0xFF135A95), fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: "Sign In",
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
                     const SizedBox(height: 20),
