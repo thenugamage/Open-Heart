@@ -1,8 +1,8 @@
- //Created by  Thenuri
+// created by Thenuri
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'VerificationSuccess.dart';
-import 'VerificationFailed.dart';
+import 'verification_success_screen.dart';
+import 'verification_failed_screen.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
@@ -10,10 +10,10 @@ class OTPVerificationScreen extends StatefulWidget {
   const OTPVerificationScreen({super.key, required this.verificationId});
 
   @override
-  _OTPVerificationScreenState createState() => _OTPVerificationScreenState();
+  OTPVerificationScreenState createState() => OTPVerificationScreenState();
 }
 
-class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
+class OTPVerificationScreenState extends State<OTPVerificationScreen> {
   final TextEditingController otpController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -38,6 +38,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,4 +114,3 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     );
   }
 }
-

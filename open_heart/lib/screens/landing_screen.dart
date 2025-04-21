@@ -1,9 +1,9 @@
 //created by thenuri
 import 'package:flutter/material.dart';
-import 'selection.dart';
+import 'selection_screen.dart';
 
-class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+class LandingPage extends StatelessWidget {
+  const LandingPage ({super.key});
 
   @override
   Widget build(BuildContext context) {

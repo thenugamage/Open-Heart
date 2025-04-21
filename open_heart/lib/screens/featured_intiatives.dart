@@ -1,17 +1,16 @@
 // created by Thenuri
 import 'package:flutter/material.dart';
-import 'main.dart';
 
 
 class FeaturedInitiativesPage extends StatefulWidget {
   const FeaturedInitiativesPage({super.key});
 
   @override
-  _FeaturedInitiativesPageState createState() =>
-      _FeaturedInitiativesPageState();
+  FeaturedInitiativesPageState createState() =>
+      FeaturedInitiativesPageState();
 }
 
-class _FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
+class FeaturedInitiativesPageState extends State<FeaturedInitiativesPage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
 

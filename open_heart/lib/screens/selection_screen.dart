@@ -1,16 +1,16 @@
 // Created by Thenuri
 import 'package:flutter/material.dart';
-import 'signin.dart';
-import 'Admin_panel/admin_signin.dart';
+import 'signin_screen.dart';
+import '../admin/screens/admin_signin_screen.dart';
 
 class SelectionScreen extends StatefulWidget {
   const SelectionScreen({super.key});
 
   @override
-  _SelectionScreenState createState() => _SelectionScreenState();
+  SelectionScreenState createState() => SelectionScreenState();
 }
 
-class _SelectionScreenState extends State<SelectionScreen> {
+class SelectionScreenState extends State<SelectionScreen> {
   int _currentStep = 0;
   String? _errorMessage;
 
@@ -94,6 +94,20 @@ class _SelectionScreenState extends State<SelectionScreen> {
                   ),
 
                   const SizedBox(height: 30),
+
+                  /// Error Message Display
+                  if (_errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
 
                   // User Button
                   SizedBox(

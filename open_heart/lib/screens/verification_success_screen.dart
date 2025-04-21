@@ -1,6 +1,6 @@
-// Created by Thenuri
+// created by Thenuri
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'home_screen.dart';
 
 class VerificationSuccessScreen extends StatelessWidget {
   const VerificationSuccessScreen({super.key});
@@ -23,7 +23,6 @@ class VerificationSuccessScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // **Logo**
               Image.asset("Assets/logo.png", height: 105),
               const SizedBox(height: 20),
               const Text(
