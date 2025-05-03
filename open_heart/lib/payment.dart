@@ -6,15 +6,30 @@ import 'package:http/http.dart' as http;
 import 'keys.dart';
 
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+  final dynamic donation; // Firestore DocumentSnapshot
+
+  const PaymentPage({super.key, required this.donation});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  double amount = 156;
+  double amount = 0;
   Map<String, dynamic>? intentPaymentData;
+
+  @override
+  void initState() {
+    super.initState();
+    final raisedAmount = widget.donation['raised'];
+    try {
+      amount =
+          double.tryParse(raisedAmount.replaceAll(RegExp(r'[^\d.]'), '')) ??
+              156;
+    } catch (_) {
+      amount = 156;
+    }
+  }
 
   Future<void> showPaymentSheet() async {
     try {
@@ -89,6 +104,8 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final data = widget.donation;
+
     return Scaffold(
       backgroundColor: const Color(0xFFB6E3F2),
       body: Container(
@@ -113,8 +130,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
                 ListTile(
                   leading: const CircleAvatar(
-                    backgroundImage:
-                        AssetImage('Assets/profile.png'), // ✅ replaced
+                    backgroundImage: AssetImage('Assets/profile.png'),
                   ),
                   title: RichText(
                     text: const TextSpan(
@@ -139,11 +155,11 @@ class _PaymentPageState extends State<PaymentPage> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    'Suwasariya Appeal',
-                    style: TextStyle(
+                    data['title'],
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic,
@@ -163,7 +179,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     children: [
                       const Icon(Icons.location_on, size: 18),
                       const SizedBox(width: 5),
-                      const Text('Islandwide'),
+                      Text(data['organization']),
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {},
@@ -175,9 +191,9 @@ class _PaymentPageState extends State<PaymentPage> {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text(
-                          'Healthcare',
-                          style: TextStyle(fontSize: 12),
+                        child: Text(
+                          data['label1'] ?? '',
+                          style: const TextStyle(fontSize: 12),
                         ),
                       ),
                     ],
@@ -186,41 +202,32 @@ class _PaymentPageState extends State<PaymentPage> {
                 const Divider(thickness: 1.0, height: 20),
                 ListTile(
                   leading: const CircleAvatar(
-                    backgroundImage:
-                        AssetImage('Assets/hoster.png'), // ✅ replaced
+                    backgroundImage: AssetImage('Assets/hoster.png'),
                   ),
-                  title: const Text(
-                    '1990 Suwa Seriya Foundation',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  title: Text(
+                    data['organization'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: const Text('Hosted By'),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Suwasariya Sri Lanka, The Nation’s Free Islandwide Emergency Ambulance Service, '
-                    'Has Been A Lifeline For The People Of Sri Lanka Since Its Inception In 2016.',
-                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(data['description']),
                 ),
                 const SizedBox(height: 16),
-
-                // ✅ Main campaign image (replaced network with asset)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.asset(
-                      'Assets/aboutUS1.png',
+                      data['imageUrl'],
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                // ✅ Donate button
                 Center(
                   child: ElevatedButton(
                     onPressed: () {

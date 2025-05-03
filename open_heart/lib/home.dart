@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'leaderboard.dart';
-import 'payment.dart';
 import 'navigationbar.dart';
 
 class HomePage extends StatelessWidget {
@@ -220,10 +219,8 @@ class HomePage extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const PaymentPage()),
-          );
+          // Removed navigation to PaymentPage
+          // You can add a different action here if needed
         },
         child: Text(
           text,
