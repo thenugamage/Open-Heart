@@ -1,6 +1,5 @@
 // created by Thenuri
 import 'package:flutter/material.dart';
-import 'main.dart';
 
 
 class FeaturedInitiativesPage extends StatefulWidget {
