@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'signin.dart';
 
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -17,11 +16,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
   bool _isLoading = false;
   String? _errorMessage;
-  
+
   // Track which step of signup we're on (1: email, 2: password & name)
 
   int _currentStep = 1;
@@ -53,6 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return false;
     }
+
     if (_passwordController.text.isEmpty ||
         _passwordController.text.length < 6) {
       setState(() {
@@ -66,6 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return false;
     }
+
     return true;
   }
 
@@ -127,7 +129,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _errorMessage = "An error occurred. Please try again later.";
       });
       ScaffoldMessenger.of(context).showSnackBar(
-
         SnackBar(content: Text(_errorMessage!), backgroundColor: Colors.red),
       );
     } finally {
@@ -144,14 +145,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     try {
-
       // Initialize Google Sign In
 
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
-
         setState(() => _isLoading = false);
         return;
       }
@@ -179,19 +178,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _errorMessage = _getMessageFromErrorCode(e.code);
       });
       ScaffoldMessenger.of(context).showSnackBar(
-
         SnackBar(
-          content: Text(_errorMessage ?? "An error occurred during Google sign in"),
+          content:
+              Text(_errorMessage ?? "An error occurred during Google sign in"),
           backgroundColor: Colors.red,
         ),
-
       );
     } catch (e) {
       setState(() {
         _errorMessage = "An error occurred. Please try again later.";
       });
       ScaffoldMessenger.of(context).showSnackBar(
-
         SnackBar(content: Text(_errorMessage!), backgroundColor: Colors.red),
       );
     } finally {
@@ -200,7 +197,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
   }
-
 
   String _getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
@@ -234,7 +230,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 end: Alignment.bottomCenter,
                 colors: [Colors.white, Color(0xFF117DB7)],
               ),
-
             ),
           ),
 
@@ -258,24 +253,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
 
                     /// Back Button
                     Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios, size: 26),
+                        icon: Icon(Icons.arrow_back_ios, size: 26),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Image.asset("Assets/logo.png", height: 105),
-                    const SizedBox(height: 20),
-                    const Text(
+                    SizedBox(height: 20),
+                    Text(
                       "Sign Up",
                       style: TextStyle(
                         fontSize: 36,
@@ -283,9 +278,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Color(0xFF08385F),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         children: [
                           if (_currentStep == 1) ...[
@@ -299,13 +294,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               controller: _nameController,
                               decoration: _inputDecoration("Your Name"),
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: 15),
                             TextField(
                               controller: _passwordController,
                               obscureText: true,
                               decoration: _inputDecoration("Password"),
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: 15),
                             TextField(
                               controller: _confirmPasswordController,
                               obscureText: true,
@@ -317,53 +312,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     if (_errorMessage != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: EdgeInsets.only(top: 8.0),
                         child: Text(
                           _errorMessage!,
-                          style:
-                              const TextStyle(color: Colors.red, fontSize: 12),
+                          style: TextStyle(color: Colors.red, fontSize: 12),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
                     SizedBox(
-
                       width: 250,
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _continueToNextStep,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF013F68),
+                          backgroundColor: Color(0xFF013F68),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           side: const BorderSide(width: 2),
-
                         ),
-                        child: _isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Text(
-                                _currentStep == 1 ? "Continue" : "Sign Up",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
+                        child: Text(
+                          _currentStep == 1 ? "Continue" : "Sign Up",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                     ),
                     if (_currentStep == 1) ...[
                       const SizedBox(height: 20),
                       const Text(
                         "or continue with",
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.black54),
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
@@ -373,15 +352,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           icon: Image.asset('Assets/google.png', height: 24),
                           label: const Text(
                             "Sign In with Google",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 16),
+                            style: TextStyle(color: Colors.black, fontSize: 16),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
-
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             side: const BorderSide(
                               color: Colors.black26,
@@ -399,17 +376,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const SignInScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const SignInScreen()),
                         );
                       },
                       child: const Text.rich(
                         TextSpan(
                           text: "Have an Account? ",
-                          style: TextStyle(color: Color(0xFF135A95), fontSize: 14),
+                          style:
+                              TextStyle(color: Color(0xFF135A95), fontSize: 14),
                           children: [
                             TextSpan(
                               text: "Sign In",
-                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -434,8 +415,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         borderRadius: BorderRadius.circular(15),
         borderSide: BorderSide.none,
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
     );
   }
 }
