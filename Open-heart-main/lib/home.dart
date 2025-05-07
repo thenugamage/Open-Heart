@@ -4,6 +4,7 @@ import 'navbar.dart';
 import 'sidebar.dart';
 import 'donate.dart';
 import 'chatbot.dart';
+import 'charity_form.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -233,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => DonatePage()),
+                      MaterialPageRoute(builder: (_) => CharityFormPage()),
                     );
                   },
                   child: const Text("Start Now"),

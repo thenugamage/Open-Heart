@@ -5,6 +5,7 @@ import 'admin_currentprojects.dart';
 import 'addnew_project.dart';
 import 'complaint_page.dart';
 import 'admin_feedbacks.dart';
+import 'admin_requested_projects.dart';
 
 class AdminDashboardPage extends StatelessWidget {
   const AdminDashboardPage({super.key});
@@ -104,7 +105,7 @@ class AdminDashboardPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const AddNewProjectPage(),
+                                builder: (_) => const AdminCharityCampaignsPage(),
                               ),
                             );
                           },
