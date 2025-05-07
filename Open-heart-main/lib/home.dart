@@ -278,16 +278,20 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
   Widget _buildDonationButtons() {
     return Column(
       children: [
-        _donationButton("Support A Donation Campaign", () {}),
+        _donationButton("Support A Donation Campaign", () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const DonatePage()),
+          );
+        }),
         const SizedBox(height: 10),
         _donationButton("Start A Donation Campaign", () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => DonatePage()),
+            MaterialPageRoute(builder: (_) => const CharityFormPage()),
           );
         }),
       ],
