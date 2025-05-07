@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ios/signup.dart';
-import 'home.dart';       // ✅ Corrected path // ✅ Added `screens/` prefix
-import 'package:ios/SelectionPage.dart';  // ✅ Corrected path
+import 'home.dart';
+import 'package:ios/SelectionPage.dart';
 
 
 class SignInScreen extends StatefulWidget {

@@ -118,7 +118,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       } catch (e) {
         setState(() => _isSaving = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: \${e.toString()}")),
+          SnackBar(content: Text("Error: ${e.toString()}")),
         );
       }
     }
@@ -182,7 +182,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               ? FileImage(_selectedImage!)
                               : (_currentImageUrl != null && _currentImageUrl!.startsWith("http")
                               ? NetworkImage(_currentImageUrl!)
-                              : const NetworkImage('https://i.pravatar.cc/150?img=9') as ImageProvider),
+                              : const NetworkImage('https://i.pravatar.cc/150?img=9')
+                          as ImageProvider),
                         ),
                       ),
                     ),
