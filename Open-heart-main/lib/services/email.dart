@@ -11,7 +11,7 @@ class EmailSender {
         String userName = '',
       }) async {
     const serviceId = 'service_wqpeqxv';
-    const templateId = 'template_2iw23b6'; // ✅ UPDATED TEMPLATE ID
+    const templateId = 'template_2iw23b6';
     const userId = 'Bm503EkAxqgOAqJvi';
 
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
