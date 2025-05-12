@@ -4,6 +4,7 @@ import 'navbar.dart';
 import 'sidebar.dart';
 import 'donate.dart';
 import 'chatbot.dart';
+import 'charity_form.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -233,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => DonatePage()),
+                      MaterialPageRoute(builder: (_) => CharityFormPage()),
                     );
                   },
                   child: const Text("Start Now"),
@@ -277,16 +278,20 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
   Widget _buildDonationButtons() {
     return Column(
       children: [
-        _donationButton("Support A Donation Campaign", () {}),
+        _donationButton("Support A Donation Campaign", () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const DonatePage()),
+          );
+        }),
         const SizedBox(height: 10),
         _donationButton("Start A Donation Campaign", () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => DonatePage()),
+            MaterialPageRoute(builder: (_) => const CharityFormPage()),
           );
         }),
       ],
