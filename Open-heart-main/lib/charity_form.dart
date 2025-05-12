@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'services/email.dart'; // Replace with actual app name
 
 class CharityFormPage extends StatefulWidget {
   const CharityFormPage({Key? key}) : super(key: key);
@@ -53,6 +54,15 @@ class _CharityFormPageState extends State<CharityFormPage> {
         'name': _nameController.text.trim(),
         'timestamp': FieldValue.serverTimestamp(),
       });
+
+      // ✅ Send confirmation email via EmailSender
+      await EmailSender.sendEmailConfirmation(
+        context,
+        _emailController.text.trim(),
+        int.tryParse(_goalController.text.trim()) ?? 0,
+        charityDescription: _charityDescController.text.trim(),
+        userName: _nameController.text.trim(),
+      );
 
       _formKey.currentState!.reset();
       _closingDateController.clear();
