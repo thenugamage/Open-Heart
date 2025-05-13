@@ -1,7 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class WalletScreen extends StatelessWidget {
+class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
+
+  @override
+  State<WalletScreen> createState() => _WalletScreenState();
+}
+
+class _WalletScreenState extends State<WalletScreen> {
+  double totalDonations = 0.0;
+  List<Map<String, dynamic>> recentTransactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDonationData();
+  }
+
+  Future<void> _fetchDonationData() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('transactions')
+        .where('userId', isEqualTo: userId)
+        .where('status', isEqualTo: 'success')
+        .orderBy('timestamp', descending: true)
+        .limit(10)
+        .get();
+
+    double total = 0.0;
+    List<Map<String, dynamic>> transactions = [];
+
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      total += (data['amount'] ?? 0);
+      transactions.add({
+        'campaign': data['campaign'] ?? '',
+        'amount': data['amount'] ?? 0,
+        'status': data['status'] ?? 'failed',
+      });
+    }
+
+    setState(() {
+      totalDonations = total;
+      recentTransactions = transactions;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +90,11 @@ class WalletScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Total Donations Made",
-                      style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 10),
-                  const Text("Rs. 4,500.00",
-                      style:
-                      TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  Text("Rs. ${totalDonations.toStringAsFixed(2)}",
+                      style: const TextStyle(
+                          fontSize: 28, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   Row(
                     children: [
@@ -68,12 +114,15 @@ class WalletScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Recent Transactions",
-                      style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 10),
-                  _transactionTile("Donation to 'Hope for Kids'", "Rs. 1000", true),
-                  _transactionTile("Donation to 'Books for All'", "Rs. 500", true),
-                  _transactionTile("Donation to 'TechFund'", "Rs. 750", false),
+                  if (recentTransactions.isEmpty)
+                    const Text("No recent transactions."),
+                  ...recentTransactions.map((tx) => _transactionTile(
+                    "Donation to '${tx['campaign']}'",
+                    "Rs. ${tx['amount']}",
+                    tx['status'] == 'success',
+                  )),
                 ],
               ),
             ),
@@ -85,15 +134,14 @@ class WalletScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Linked Payment Methods",
-                      style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 10),
                   ListTile(
                     leading: const Icon(Icons.credit_card),
                     title: const Text("Visa •••• 1234"),
                     trailing: const Icon(Icons.delete_outline),
                     onTap: () {
-                      // Remove logic here
+                      // Remove card logic here
                     },
                   ),
                   const SizedBox(height: 5),

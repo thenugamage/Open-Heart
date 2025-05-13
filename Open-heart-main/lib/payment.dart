@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'payment conform.dart';
-import 'services/email_service.dart'; // ✅ Updated path to use email_service.dart
+import 'services/email_service.dart';
 
 class PaymentPage extends StatefulWidget {
   final String docId;
@@ -70,39 +70,35 @@ class _PaymentPageState extends State<PaymentPage> {
     final zipCode = _zipCodeController.text.trim();
     final expiry = _expiryController.text.trim();
 
-    // Validate amount
     final amount = int.tryParse(inputAmount);
     if (amount == null || amount <= 0) {
       _showMessage("Enter a valid donation amount (LKR). Amount must be numeric.");
       return;
     }
 
-    // Validate email
     if (email.isEmpty || !email.contains("@")) {
       _showMessage("Enter a valid email address.");
       return;
     }
 
-    // Validate payment method
     if (selectedMethod == null) {
       _showMessage("Please select a payment method.");
       return;
     }
 
-    // Validate ZIP code (exactly 5 digits)
     final zipRegex = RegExp(r'^\d{5}$');
     if (!zipRegex.hasMatch(zipCode)) {
       _showMessage("ZIP Code must be exactly 5 digits.");
       return;
     }
 
-    // Validate expiry format MM/YY
     final expiryRegex = RegExp(r'^(0[1-9]|1[0-2])/\d{2}$');
     if (!expiryRegex.hasMatch(expiry)) {
       _showMessage("Expiry date must be in MM/YY format.");
       return;
     }
 
+    // ✅ Update donation campaign 'raised' amount
     final docRef = FirebaseFirestore.instance.collection('donations').doc(widget.docId);
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
@@ -121,8 +117,22 @@ class _PaymentPageState extends State<PaymentPage> {
       transaction.update(docRef, {'raised': currentRaised + amount});
     });
 
+    // ✅ Save to 'transactions' collection
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('transactions').add({
+        'userId': user.uid,
+        'campaign': widget.title,
+        'amount': amount,
+        'status': 'success',
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
+
+    // ✅ Send email confirmation
     await EmailSender.sendEmailConfirmation(context, email, amount);
 
+    // ✅ Navigate to confirmation screen
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.push(
         context,
