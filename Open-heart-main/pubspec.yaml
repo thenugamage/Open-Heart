@@ -19,7 +19,7 @@ dependencies:
   google_fonts: ^4.0.4
   google_sign_in: ^6.1.5
   font_awesome_flutter: ^10.8.0
-  image_picker: ^1.0.4
+  image_picker: ^0.8.4+2
   uuid: ^4.2.1
   intl: ^0.18.1
   http: ^1.3.0
@@ -61,4 +61,5 @@ flutter:
     - Assets/admin2.png
     - Assets/admin3.png
     - Assets/admin4.png
+    - Assets/children.png
     - Assets/icons/
