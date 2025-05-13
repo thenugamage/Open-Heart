@@ -9,7 +9,7 @@ class ComplaintPage extends StatefulWidget {
 }
 
 class _ComplaintPageState extends State<ComplaintPage> {
-  bool _showDetails = false; // Track whether to show the details or not
+  bool _showDetails = false;
 
   // Function to fetch the weekly complaint count
   Future<int> getWeeklyComplaintCount() async {

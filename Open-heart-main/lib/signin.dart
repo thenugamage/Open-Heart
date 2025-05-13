@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:ios/signup.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'home.dart';
-import 'package:ios/SelectionPage.dart';
-
+import 'signup.dart';
+import 'SelectionPage.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -40,6 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -65,11 +66,17 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     try {
-      final googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return;
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      final googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
+      if (googleUser == null) {
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
@@ -116,6 +123,19 @@ class _SignInScreenState extends State<SignInScreen> {
       default:
         return "An error occurred. Please try again.";
     }
+  }
+
+  InputDecoration _inputDecoration(String hintText) {
+    return InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+    );
   }
 
   @override
@@ -286,19 +306,6 @@ class _SignInScreenState extends State<SignInScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  InputDecoration _inputDecoration(String hintText) {
-    return InputDecoration(
-      filled: true,
-      fillColor: Colors.white,
-      hintText: hintText,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide.none,
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
     );
   }
 }
