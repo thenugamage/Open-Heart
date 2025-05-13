@@ -26,12 +26,8 @@ class AdminCurrentProjects extends StatelessWidget {
           icon: Image.asset('Assets/icons/back.png', height: 24),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 12.0),
-            child: Icon(Icons.person_outline),
-          ),
-        ],
+        // Removed the user image from the top right corner
+        actions: [],
       ),
       body: Column(
         children: [
@@ -41,10 +37,10 @@ class AdminCurrentProjects extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(user.photoURL ?? ''),
-                    radius: 16,
-                    backgroundColor: Colors.grey[300],
+                  Image.asset(
+                    'Assets/icons/user.png', // Add user image before the text
+                    height: 28,  // Adjust size if needed
+                    width: 28,
                   ),
                   const SizedBox(width: 8),
                   Text.rich(
