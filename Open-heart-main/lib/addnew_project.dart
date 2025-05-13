@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -23,7 +22,7 @@ class _AddProjectPageState extends State<AddProjectPage> {
   final TextEditingController _goalClosingDateController = TextEditingController();
   final TextEditingController _mainDescriptionController = TextEditingController();
 
-  File? _selectedImage;
+  File? _selectedImage; // To hold the selected image file
 
   @override
   void initState() {
@@ -36,22 +35,41 @@ class _AddProjectPageState extends State<AddProjectPage> {
     _mainDescriptionController.text = data['main_description'] ?? '';
   }
 
+  // Function to allow the admin to pick an image from the gallery
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path); // Assign the selected image
+        });
+      }
+    } catch (e) {
+      print("Error picking image: $e");
     }
   }
 
-  Future<String> _uploadImage(File imageFile) async {
-    final fileName = '${DateTime.now().millisecondsSinceEpoch}.png';
-    final ref = FirebaseStorage.instance.ref().child('donation_images/$fileName');
-    await ref.putFile(imageFile);
-    return await ref.getDownloadURL();
+  // Function to upload image to Firebase Storage and get the download URL
+  Future<String?> _uploadImage(File imageFile) async {
+    try {
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}.png'; // Unique file name
+      final ref = FirebaseStorage.instance.ref().child('donation_images/$fileName'); // Storage reference
+
+      print("Uploading image to Firebase Storage...");
+      await ref.putFile(imageFile); // Upload image to Firebase Storage
+      print("Image uploaded successfully.");
+
+      // Get the download URL
+      final downloadUrl = await ref.getDownloadURL();
+      print("Image URL: $downloadUrl"); // Log the URL for debugging
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null; // Return null if there's an error
+    }
   }
 
+  // Function to submit the form and save the data in Firestore
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final email = widget.charityData['email'] ?? "unknown";
@@ -59,44 +77,70 @@ class _AddProjectPageState extends State<AddProjectPage> {
       final topic = _charityTopicController.text;
       final amount = int.tryParse(_goalAmountController.text) ?? 0;
       final description = _charityDescriptionController.text;
-      String imageUrl = 'Assets/help.png';
+      String? imageUrl = ''; // Default image if no image is selected
 
+      // If an image is selected, upload it to Firebase Storage
       if (_selectedImage != null) {
-        imageUrl = await _uploadImage(_selectedImage!);
+        print("Uploading image...");
+        imageUrl = await _uploadImage(_selectedImage!); // Upload image and get URL
+
+        if (imageUrl == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Failed to upload image. Please try again.")),
+          );
+          return; // Return early if image upload fails
+        }
+      } else {
+        // If no image is selected, assign a default value
+        imageUrl = 'Assets/children.png';  // Default static image if no dynamic image is selected
+        print("Using default image: $imageUrl");
       }
 
-      await FirebaseFirestore.instance.collection('charity_campaigns').add({
-        'charity_topic': topic,
-        'goal_amount': amount,
-        'charity_description': description,
-        'goal_closing_date': _goalClosingDateController.text,
-        'main_description': _mainDescriptionController.text,
-        'email': email,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+      // Adding the charity project data to Firestore
+      try {
+        await FirebaseFirestore.instance.collection('charity_campaigns').add({
+          'charity_topic': topic,
+          'goal_amount': amount,
+          'charity_description': description,
+          'goal_closing_date': _goalClosingDateController.text,
+          'main_description': _mainDescriptionController.text,
+          'email': email,
+          'timestamp': FieldValue.serverTimestamp(),
+          'imageUrl': imageUrl, // Store the image URL dynamically
+        });
 
-      await FirebaseFirestore.instance.collection('donations').add({
-        'title': topic,
-        'goal': amount.toString(),
-        'raised': 0,
-        'descriptions': description,
-        'imageUrl': imageUrl,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+        // Adding the donation project data to Firestore
+        await FirebaseFirestore.instance.collection('donations').add({
+          'title': topic,
+          'goal': amount.toString(),
+          'raised': 0,
+          'descriptions': description,
+          'imageUrl': imageUrl, // Store the image URL dynamically
+          'timestamp': FieldValue.serverTimestamp(),
+        });
 
-      await EmailSender.sendEmailConfirmation(
-        context,
-        email,
-        amount,
-        charityDescription: description,
-        userName: name,
-      );
+        // Send an email confirmation after adding the project
+        await EmailSender.sendEmailConfirmation(
+          context,
+          email,
+          amount,
+          charityDescription: description,
+          userName: name,
+        );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Project added and email sent!")),
-      );
+        // Show a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Project added and email sent!")),
+        );
 
-      Navigator.pop(context);
+        // Close the page and go back to the previous screen
+        Navigator.pop(context);
+      } catch (e) {
+        print('Error adding project to Firestore: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Error adding project. Please try again.")),
+        );
+      }
     }
   }
 
@@ -172,6 +216,11 @@ class _AddProjectPageState extends State<AddProjectPage> {
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.teal.shade200),
                       child: const Text("Upload A Photo", style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
+                    if (_selectedImage != null) // Display selected image preview
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Image.file(_selectedImage!, height: 100),
+                      ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _submitForm,
