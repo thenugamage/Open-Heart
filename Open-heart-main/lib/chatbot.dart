@@ -14,6 +14,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
 
   final Map<String, String> botResponses = {
     'hello': 'Hi there! 👋 How can I help you with donations or campaigns?',
+    'hi': 'Hi there! 👋 How can I help you with donations or campaigns?',
     'how to donate': 'You can click "Start A Donation Campaign" on the home page or "Support A Campaign".',
     'leaderboard': 'Check out the leaderboard on the leaderboard page.',
     'how to get points': 'You can get points by donating for charity programs.',
@@ -23,6 +24,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
     'contact': 'You can contact us via email at **admin@openheart.com** or call +123 456 7890.',
     'bye': 'Goodbye! 👋 Stay kind and generous!',
     'help': 'I can help you donate, report, volunteer, or find info about our campaigns.',
+    'default': '🤖 I’m not sure about that. Could you please clarify? Or you can contact support at openheartteamz@gmail.com.',
   };
 
   final List<String> quickReplies = [
@@ -51,19 +53,24 @@ class _ChatBotPageState extends State<ChatBotPage> {
     });
 
     _controller.clear();
-    _generateBotResponse(text.toLowerCase().trim());
+    _generateBotResponse(text.trim());
     _scrollToBottom();
   }
 
   void _generateBotResponse(String userInput) {
-    String response = "🤖 I'm not sure about that. Please contact support at openheartteamz@gmail.com.";
+    String response = botResponses['default']!; // Default response if no match is found
 
+    // Normalize input to lowercase
+    userInput = userInput.toLowerCase();
+
+    // Check for predefined responses (handle common greetings as well)
     botResponses.forEach((key, value) {
       if (userInput.contains(key)) {
         response = value;
       }
     });
 
+    // Simulate delay and then respond
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         messages.add({"role": "bot", "text": response});
