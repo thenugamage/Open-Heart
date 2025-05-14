@@ -1,101 +1,149 @@
+// Created by Thenuri
 import 'package:flutter/material.dart';
-import 'package:ios/signin.dart';
-import 'admin_signin.dart'; // ✅ Make sure this file exists and is correctly named
+import 'signin.dart';
+import 'admin_signin.dart';
 
-class SelectionPage extends StatelessWidget {
-  const SelectionPage({super.key});
+class SelectionScreen extends StatefulWidget {
+  const SelectionScreen({super.key});
+
+  @override
+  _SelectionScreenState createState() => _SelectionScreenState();
+}
+
+class _SelectionScreenState extends State<SelectionScreen> {
+  int _currentStep = 0;
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
-          Positioned.fill(
-            child: Image.asset(
-              'Assets/backgroundimg.png',
-              fit: BoxFit.cover,
+          /// Background Gradient
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.white, Color(0xFF117DB7)],
+              ),
             ),
           ),
 
-          // Foreground content
+          /// Background Image
+          Positioned(
+            top: 100,
+            left: 10,
+            right: 0,
+            bottom: 0,
+            child: Opacity(
+              opacity: 0.8,
+              child: Image.asset(
+                'Assets/backgroundimg.png',
+                width: 300,
+                height: 400,
+              ),
+            ),
+          ),
+
+          /// Page Content
           SafeArea(
-            child: Column(
-              children: [
-                // Back Button
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    icon: Image.asset('Assets/icons/back.png', height: 24),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10),
 
-                // Centered UI
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset('Assets/logo.png', height: 100),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Selection",
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 40),
-
-                        // User Sign In
-                        SizedBox(
-                          width: 200,
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(255, 8, 85, 124),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => const SignInScreen()),
-                              );
-                            },
-                            child: const Text("User", style: TextStyle(fontSize: 16, color: Colors.white)),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        // Admin Sign In ✅
-                        SizedBox(
-                          width: 200,
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(255, 8, 85, 124),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => const AdminSignInPage()),
-                              );
-                            },
-                            child: const Text("Admin Panel", style: TextStyle(fontSize: 16, color: Colors.white)),
-                          ),
-                        ),
-                      ],
+                  /// Back Button
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, size: 26),
+                      onPressed: () {
+                        if (_currentStep == 2) {
+                          setState(() {
+                            _currentStep = 1;
+                            _errorMessage = null;
+                          });
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      },
                     ),
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 10),
+
+                  /// Logo
+                  Image.asset("Assets/logo.png", height: 100),
+
+                  const SizedBox(height: 50),
+
+                  /// Page Title
+                  const Text(
+                    "Selection",
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF08385F),
+                    ),
+                  ),
+
+                  const SizedBox(height: 70),
+
+                  // User Button
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SignInScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 8, 85, 124),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                      ),
+                      child: const Text(
+                        "User",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 50),
+
+                  // Admin Panel Button
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const AdminSignInPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 8, 85, 124),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                      ),
+                      child: const Text(
+                        "Admin Panel",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -103,3 +151,6 @@ class SelectionPage extends StatelessWidget {
     );
   }
 }
+
+
+

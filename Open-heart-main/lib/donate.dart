@@ -215,7 +215,7 @@ class DonatePage extends StatelessWidget {
                 context: context,
                 data: doc.data() as Map<String, dynamic>,
                 docId: doc.id,
-              )).toList(),
+              )),
             ],
           );
         },

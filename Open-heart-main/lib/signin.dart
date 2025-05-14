@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'home.dart';
 import 'signup.dart';
 import 'SelectionPage.dart';
@@ -162,7 +161,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => const SelectionPage()),
+                        MaterialPageRoute(builder: (_) => const SelectionScreen()),
                       );
                     },
                     child: Image.asset(

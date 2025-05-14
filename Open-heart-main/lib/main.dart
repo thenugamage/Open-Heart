@@ -12,14 +12,9 @@ import 'donate.dart';
 import 'settings.dart';
 import 'profile.dart';
 import 'editprofile.dart';
-import 'contactus.dart';
-import 'report.dart';
 import 'feedbacks.dart';
-import 'aboutus.dart';
 import 'SelectionPage.dart';
 import 'Dashboard.dart';
-import 'donate_details.dart';
-import 'verification_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,7 +107,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/editprofile': (context) => const EditProfilePage(),
         '/feedbacks': (context) => const FeedbacksPage(),
-        '/selection': (context) => const SelectionPage(),
+        '/selection': (context) => const SelectionScreen(),
         '/dashboard': (context) => const DashboardPage(),
         // Uncomment these when you implement the screens
         // '/contactus': (context) => const ContactUsPage(),

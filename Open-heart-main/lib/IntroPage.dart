@@ -67,13 +67,13 @@ class IntroPage extends StatelessWidget {
                   ),
                   Positioned(
                     top: 50,
-                    left: 115,
+                    left: 110,
                     child: _buildImage('Assets/child2.png', width: 95, height: 210),
                   ),
                   Positioned(
                     top: 0,
-                    right: 95,
-                    child: _buildImage('Assets/child3.png', width: 100, height: 198),
+                    right: 90,
+                    child: _buildImage('Assets/child3.png', width: 95, height: 198),
                   ),
                   Positioned(
                     top: 30,
@@ -87,13 +87,13 @@ class IntroPage extends StatelessWidget {
                   ),
                   Positioned(
                     top: 260,
-                    left: 95,
-                    child: _buildImage('Assets/child6.png', width: 115, height: 262),
+                    left: 104,
+                    child: _buildImage('Assets/child6.png', width: 95, height: 262),
                   ),
                   Positioned(
                     top: 200,
-                    right: 95,
-                    child: _buildImage('Assets/child7.png', width: 100, height: 227),
+                    right: 90,
+                    child: _buildImage('Assets/child7.png', width: 95, height: 227),
                   ),
                   Positioned(
                     top: 280,
@@ -122,7 +122,7 @@ class IntroPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SelectionPage(),
+                      builder: (context) => const SelectionScreen(),
                     ),
                   );
                 },
