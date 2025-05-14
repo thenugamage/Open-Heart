@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ios/privacy.dart';
 import 'editprofile.dart';
 import 'home.dart';
 import 'feedbacks.dart';
@@ -8,7 +9,7 @@ import 'notification.dart';
 import 'terms_policies.dart';
 import 'data_server.dart';
 import 'wallet.dart';
-import 'help and support.dart';
+import 'about_us.dart';
 import 'add account.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -88,7 +89,7 @@ class SettingsPage extends StatelessWidget {
                 _emojiTile("🔒", "Privacy", () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const ReportProblemPage()),
+                    MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()),
                   );
                 }),
               ]),
@@ -104,10 +105,10 @@ class SettingsPage extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const WalletScreen()),
                   );
                 }),
-                _emojiTile("❓", "Help & Support", () {
+                _emojiTile("ℹ️", "About Us", () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+                    MaterialPageRoute(builder: (_) => const AboutUsScreen()), // Update the screen to AboutUsScreen
                   );
                 }),
                 _emojiTile("📜", "Terms and Policies", () {
