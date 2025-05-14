@@ -19,11 +19,36 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   List<Map<String, dynamic>> firebaseUsers = [];
 
   final List<Map<String, dynamic>> demoDonors = [
-    {"name": "Sebastian", "username": "@usern", "score": 1124, "image": "https://i.pravatar.cc/150?img=1"},
-    {"name": "Jason", "username": "@usern", "score": 875, "image": "https://i.pravatar.cc/150?img=2"},
-    {"name": "Natalie", "username": "@usern", "score": 774, "image": "https://i.pravatar.cc/150?img=3"},
-    {"name": "Serenity", "username": "@usern", "score": 723, "image": "https://i.pravatar.cc/150?img=4"},
-    {"name": "Hannah", "username": "@usern", "score": 559, "image": "https://i.pravatar.cc/150?img=5"},
+    {
+      "name": "Sebastian",
+      "username": "@usern",
+      "score": 1124,
+      "image": "https://i.pravatar.cc/150?img=1",
+    },
+    {
+      "name": "Jason",
+      "username": "@usern",
+      "score": 875,
+      "image": "https://i.pravatar.cc/150?img=2",
+    },
+    {
+      "name": "Natalie",
+      "username": "@usern",
+      "score": 774,
+      "image": "https://i.pravatar.cc/150?img=3",
+    },
+    {
+      "name": "Serenity",
+      "username": "@usern",
+      "score": 723,
+      "image": "https://i.pravatar.cc/150?img=4",
+    },
+    {
+      "name": "Hannah",
+      "username": "@usern",
+      "score": 559,
+      "image": "https://i.pravatar.cc/150?img=5",
+    },
   ];
 
   @override
@@ -33,20 +58,22 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Future<void> _fetchLeaderboardUsers() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('leaderboard')
-        .orderBy('points', descending: true)
-        .get();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('leaderboard')
+            .orderBy('points', descending: true)
+            .get();
 
-    final fetched = snapshot.docs.map((doc) {
-      final data = doc.data();
-      return {
-        'name': data['displayName'] ?? 'User',
-        'username': '@user',
-        'score': data['points'] ?? 0,
-        'image': data['photoURL'] ?? 'https://i.pravatar.cc/150?img=9'
-      };
-    }).toList();
+    final fetched =
+        snapshot.docs.map((doc) {
+          final data = doc.data();
+          return {
+            'name': data['displayName'] ?? 'User',
+            'username': '@user',
+            'score': data['points'] ?? 0,
+            'image': data['photoURL'] ?? 'https://i.pravatar.cc/150?img=9',
+          };
+        }).toList();
 
     setState(() {
       firebaseUsers = fetched;
@@ -86,21 +113,32 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               child: ListView.separated(
                 padding: const EdgeInsets.all(16),
                 itemCount: allUsers.length,
-                separatorBuilder: (_, __) => const Divider(color: Colors.white10),
+                separatorBuilder:
+                    (_, __) => const Divider(color: Colors.white10),
                 itemBuilder: (context, index) {
                   final user = allUsers[index];
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(user['image']),
                     ),
-                    title: Text(user['name'],
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
-                    subtitle: Text(user['username'],
-                        style: const TextStyle(color: Colors.white54)),
-                    trailing: Text(user['score'].toString(),
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
+                    title: Text(
+                      user['name'],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      user['username'],
+                      style: const TextStyle(color: Colors.white54),
+                    ),
+                    trailing: Text(
+                      user['score'].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -115,7 +153,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
-      child: StreamBuilder<User?> (
+      child: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.userChanges(),
         builder: (context, snapshot) {
           final user = snapshot.data;
@@ -127,16 +165,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             elevation: 0,
             leadingWidth: 70,
             leading: Builder(
-              builder: (context) => GestureDetector(
-                onTap: () => Scaffold.of(context).openDrawer(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(userPhoto),
+              builder:
+                  (context) => GestureDetector(
+                    onTap: () => Scaffold.of(context).openDrawer(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: NetworkImage(userPhoto),
+                      ),
+                    ),
                   ),
-                ),
-              ),
             ),
             actions: [
               IconButton(
@@ -148,28 +187,35 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 },
               ),
             ],
-            title: showSearchBar
-                ? TextField(
-              controller: _searchController,
-              autofocus: true,
-              decoration: const InputDecoration(
-                hintText: "Search...",
-                border: InputBorder.none,
-              ),
-            )
-                : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Hello $userName",
-                    style: const TextStyle(
-                        color: Colors.black87, fontSize: 16)),
-                Text(
-                  "Where you want go",
-                  style:
-                  TextStyle(color: Colors.pink[300], fontSize: 12),
-                ),
-              ],
-            ),
+            title:
+                showSearchBar
+                    ? TextField(
+                      controller: _searchController,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: "Search...",
+                        border: InputBorder.none,
+                      ),
+                    )
+                    : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hello $userName",
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "Where you want go",
+                          style: TextStyle(
+                            color: Colors.pink[300],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
           );
         },
       ),
@@ -261,11 +307,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         ),
         const SizedBox(height: 6),
         if (position == 1) ...[
-          Image.asset(
-            'Assets/icons/star.png',
-            width: 26,
-            height: 26,
-          ),
+          Image.asset('Assets/icons/star.png', width: 26, height: 26),
           const SizedBox(height: 6),
         ],
         Text(
@@ -277,10 +319,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         ),
         Text(
           score,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: color),
         ),
       ],
     );
