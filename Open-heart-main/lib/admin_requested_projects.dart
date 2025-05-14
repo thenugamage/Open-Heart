@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'addnew_project.dart';
 
 class AdminCharityCampaignsPage extends StatefulWidget {
-  const AdminCharityCampaignsPage({Key? key}) : super(key: key);
+  const AdminCharityCampaignsPage({super.key});
 
   @override
   State<AdminCharityCampaignsPage> createState() => _AdminCharityCampaignsPageState();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'signin.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -363,9 +362,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      side: const BorderSide(
-                        width: 2,
-                      ),
                     ),
                     child: _isLoading
                         ? const SizedBox(
@@ -406,25 +402,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: SizedBox(
                     width: 250,
+                    height: 50,
                     child: ElevatedButton.icon(
                       onPressed: _isLoading ? null : _signInWithGoogle,
-                      icon: Image.asset(
-                        'Assets/google.png',
-                        height: 24,
-                      ),
+                      icon: Image.asset("Assets/google.png", height: 24),
                       label: const Text(
                         "Sign In with Google",
-                        style: TextStyle(color: Colors.black, fontSize: 16),
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 103, 143, 209),
+                          fontSize: 18,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        side: const BorderSide(
-                          color: Colors.black26,
-                          width: 1,
+                          borderRadius: BorderRadius.circular(15),
                         ),
                       ),
                     ),

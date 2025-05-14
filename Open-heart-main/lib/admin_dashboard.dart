@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'selectionPage.dart';
 import 'admin_currentprojects.dart';
-import 'addnew_project.dart';
 import 'complaint_page.dart';
 import 'admin_feedbacks.dart';
 import 'admin_requested_projects.dart';
@@ -40,7 +39,7 @@ class AdminDashboardPage extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => const SelectionPage()),
+                        MaterialPageRoute(builder: (_) => const SelectionScreen()),
                       ),
                       child: Image.asset('Assets/icons/back.png', height: 28),
                     ),

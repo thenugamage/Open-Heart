@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class CharityFormPage extends StatefulWidget {
-  const CharityFormPage({Key? key}) : super(key: key);
+  const CharityFormPage({super.key});
 
   @override
   State<CharityFormPage> createState() => _CharityFormPageState();
